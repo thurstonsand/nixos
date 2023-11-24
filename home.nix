@@ -12,14 +12,15 @@
     username = "thurstonsand";
     homeDirectory = "/home/thurstonsand";
     packages = with pkgs; [
+      fh
       firefox
-      gh
       git
+      git-trim
       htop
       nix-prefetch-github
+      starship
       tldr
       unzip
-      thefuck
     ];
   };
 
@@ -34,27 +35,6 @@
         ll = "ls -l";
         la = "ls -al";
       };
-      # prezto = {
-      # enable = true;
-      # prompt = {
-      # showReturnVal = true;
-      # theme = "adam1";
-      # };
-      #   pmodules = [
-      #     "environment"
-      #     "terminal"
-      #     "editor"
-      #     "history"
-      #     "directory"
-      #     "spectrum"
-      #     "utility"
-      #     "completion"
-      #     "prompt"
-      #     "syntax-highlighting"
-      #     "git"
-      #     "fasd"
-      #   ];
-      # };
     };
     starship = {
       enable = true;
@@ -103,7 +83,6 @@
         };
       };
     };
-    git-credential-oauth.enable = true;
 
     vim = {
       enable = true;

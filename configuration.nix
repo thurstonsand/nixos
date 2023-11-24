@@ -4,7 +4,7 @@
   # nixos options: https://search.nixos.org/options?channel=23.05
   imports = [
     ./hardware-configuration.nix
-    ./docker.nix
+    ./containers.nix
   ];
 
   # enable flakes
@@ -16,7 +16,10 @@
   };
 
   # Set hostname.
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    unmanaged = [ "interface-name:ve-*" ];
+  };
   networking.hostName = "knownapps";
 
   # Bootloader.
@@ -83,9 +86,6 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
