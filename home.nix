@@ -103,7 +103,6 @@
         };
       };
     };
-    git-credential-oauth.enable = true;
 
     vim = {
       enable = true;
