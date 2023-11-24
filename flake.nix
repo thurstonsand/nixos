@@ -11,15 +11,27 @@
   };
 
   outputs =
-    inputs@{ self
+    { self
     , nixpkgs
     , home-manager
     , vscode-server
     , ...
-    }: {
-      nixosConfigurations.knownapps = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+    }:
+    let
+      inherit (nixpkgs) lib;
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        # Allow unfree packages
+        config.allowUnfree = true;
+      };
+    in
+    {
+      nixosConfigurations.knownapps = lib.nixosSystem {
         modules = [
+          {
+            nixpkgs.pkgs = pkgs;
+          }
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -33,7 +45,6 @@
           })
 
         ];
-        specialArgs = { inherit inputs; };
       };
     };
 }
