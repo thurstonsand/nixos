@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   # nixos options: https://search.nixos.org/options?channel=23.05
   imports = [

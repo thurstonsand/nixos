@@ -1,5 +1,4 @@
 { pkgs, ... }:
-with pkgs;
 {
   users.mutableUsers = false;
   users.groups.thurstonsand.gid = 3001;
