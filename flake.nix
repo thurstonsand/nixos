@@ -28,11 +28,12 @@
     in
     {
       nixosConfigurations.knownapps = lib.nixosSystem {
+        # https://nixos.wiki/wiki/NixOS_modules
         modules = [
           {
             nixpkgs.pkgs = pkgs;
           }
-          ./configuration.nix
+          ./system
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -40,10 +41,9 @@
             home-manager.users.thurstonsand = import ./home.nix;
           }
           vscode-server.nixosModules.default
-          ({ config, pkgs, ... }: {
+          {
             services.vscode-server.enable = true;
-          })
-
+          }
         ];
       };
     };

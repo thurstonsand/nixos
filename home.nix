@@ -1,24 +1,16 @@
-{ inputs, lib, config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # home-manager options: https://mipmip.github.io/home-manager-option-search/
   imports = [ ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
 
   home = {
     username = "thurstonsand";
     homeDirectory = "/home/thurstonsand";
     packages = with pkgs; [
       fh
-      firefox
-      git
       git-trim
-      htop
       nix-prefetch-github
-      starship
       tldr
       unzip
     ];
@@ -47,6 +39,11 @@
         };
       };
     };
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
     zoxide = {
       enable = true;
       enableZshIntegration = true;
@@ -65,6 +62,7 @@
       enable = true;
       userName = "Thurston Sandberg";
       userEmail = "thurstonsand@hey.com";
+      ignores = [ ".direnv" ];
       diff-so-fancy = {
         enable = true;
       };
@@ -88,7 +86,7 @@
       enable = true;
       plugins = with pkgs.vimPlugins; [ vim-nix vim-lastplace ];
       defaultEditor = true;
-      extraConfig = builtins.readFile ./apps/vim/.vimrc;
+      extraConfig = builtins.readFile ./dotfiles/.vimrc;
     };
 
   };
