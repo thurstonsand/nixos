@@ -148,15 +148,18 @@ in
       homarr = {
         autoStart = true;
         image = "ghcr.io/ajnart/homarr:latest";
+        user = "3001:3001";
         extraOptions = [
           "--network=${macvlan-name}"
           "--ip=${homarr-ip}"
         ];
         ports = [ "80:80" ];
         volumes = [
+          "/apps/homarr/.cache/yarn:/.cache/yarn"
+          "/apps/homarr/.yarn:/.yarn"
           "/apps/homarr/app/data/configs:/app/data/configs"
-          "/apps/homarr/data:/data"
           "/apps/homarr/app/public/icons:/app/public/icons"
+          "/apps/homarr/data:/data"
           "/var/run/docker.sock:/var/run/docker.sock"
           "/etc/localtime:/etc/localtime:ro"
         ];
