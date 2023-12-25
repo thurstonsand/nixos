@@ -1,35 +1,9 @@
 { gluetun-ip, torrent-restarter-ip }:
-
+{ pkgs, ... }:
+let
+  qbittorrent-webui-port = "80";
+in
 {
-
-  # torrent-restarter-image =
-  #   let
-  #     cmd = writeScript "torrent-restarter.sh" ''
-  #       #! /bin/ash
-  #       sleep 10
-
-  #       QBITTORRENT_ADDRESS="192.168.1.195"
-  #       QBITTORRENT_PORT=80
-  #       echo "monitoring qbittorrent for external access on http://$QBITTORRENT_ADDRESS:$QBITTORRENT_PORT"
-  #       while true; do
-  #         if ! curl -s -o /dev/null --fail "http://$QBITTORRENT_ADDRESS:$QBITTORRENT_PORT"; then
-  #           date '+%F %T: qbittorrent unreachable; restarting container'
-  #           docker restart qbittorrent
-  #         fi
-  #         sleep 60
-  #       done
-  #     '';
-  #   in
-  #   dockerTools.buildLayeredImage
-  #     {
-  #       name = "torrent-restarter";
-  #       tag = "latest";
-  #       contents = [ curl docker coreutils ];
-  #       config = {
-  #         Cmd = [ cmd ];
-  #       };
-  #     };
-
   virtualisation.enhanced-containers = {
     gluetun = {
       image = "qmcgaw/gluetun";
@@ -40,7 +14,7 @@
         "8888:8888/tcp" # HTTP proxy
         "8388:8388/tcp" # Shadowsocks
         "8388:8388/udp" # Shadowsocks
-        "80:80" # qbittorrent web ui
+        "${qbittorrent-webui-port}:${qbittorrent-webui-port}" # qbittorrent web ui
         "6881:6881" # qbittorrent
         "6881:6881/udp" # qbittorrent
       ];
@@ -75,21 +49,46 @@
         "/etc/localtime:/etc/localtime:ro"
       ];
       environment = {
-        WEBUI_PORT = "80";
+        WEBUI_PORT = qbittorrent-webui-port;
         PUID = "3001";
         PGID = "3001";
       };
       dependsOn = [ "gluetun" ];
     };
 
-    # torrent-restarter = {
-    #   image = torrent-restarter-image;
-    #   ip = torrent-restarter-ip;
-    #   volumes = [
-    #     "/var/run/docker.sock:/var/run/docker.sock"
-    #     "/etc/localtime:/etc/localtime:ro"
-    #   ];
-    #   dependsOn = [ "qbittorrent" ];
-    # };
+    torrent-restarter = with pkgs; let
+      torrent-restarter-script = writeScriptBin "torrent-restarter.sh" ''
+        #! /bin/bash
+
+        sleep 10
+
+        echo "monitoring qbittorrent for external access on http://${gluetun-ip}:${qbittorrent-webui-port}"
+        while true; do
+            if ! curl -s -o /dev/null --fail "http://${gluetun-ip}:${qbittorrent-webui-port}"; then
+                date '+%F %T: qbittorrent unreachable; restarting container'
+                docker restart qbittorrent
+            fi
+            sleep 60
+        done
+      '';
+      image-name = "torrent-restarter";
+      image-version = "latest";
+      torrent-restarter-image = dockerTools.buildLayeredImage {
+        name = image-name;
+        tag = image-version;
+        contents = [ torrent-restarter-script bash docker coreutils curlMinimal ];
+        config.Cmd = [ "/bin/torrent-restarter.sh" ];
+      };
+    in
+    {
+      image = "${image-name}:${image-version}";
+      imageFile = torrent-restarter-image;
+      ip = torrent-restarter-ip;
+      volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock"
+        "/etc/localtime:/etc/localtime:ro"
+      ];
+      dependsOn = [ "qbittorrent" ];
+    };
   };
 }
