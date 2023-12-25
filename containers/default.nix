@@ -18,7 +18,7 @@ in
   imports = [
     (import ./enhanced-container-module.nix macvlan-name)
     ./watchtower.nix
-    # (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; }) # WIP
+    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
     # (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip; }) # WIP
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })

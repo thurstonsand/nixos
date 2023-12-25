@@ -10,6 +10,21 @@ let
         example = "library/hello-world";
       };
 
+      imageFile = mkOption {
+        type = with types; nullOr package;
+        default = null;
+        description = lib.mdDoc ''
+          Path to an image file to load before running the image. This can
+          be used to bypass pulling the image from the registry.
+
+          The `image` attribute must match the name and
+          tag of the image contained in this file, as they will be used to
+          run the container with that image. If they do not match, the
+          image will be pulled from the registry as usual.
+        '';
+        example = literalExpression "pkgs.dockerTools.buildImage {...};";
+      };
+
       capAdd = mkOption {
         type = with types; listOf str;
         default = [ ];
@@ -183,7 +198,7 @@ in
         {
           autoStart = true;
           extraOptions = extraOptions ++ netOptions ++ capAddOptions ++ devicesOptions;
-        } // addIfExists { inherit (opts) image entrypoint cmd environment ports user volumes dependsOn; })
+        } // addIfExists { inherit (opts) image imageFile entrypoint cmd environment ports user volumes dependsOn; })
       cfg;
   };
 }
