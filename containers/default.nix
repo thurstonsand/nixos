@@ -7,6 +7,7 @@ let
   gluetun-ip = "192.168.1.195";
   send-ip = "192.168.1.224";
   send-redis-ip = "192.168.1.225";
+  overseerr-ip = "192.168.1.228";
   flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
   sonarr-ip = "192.168.1.237";
@@ -19,7 +20,7 @@ in
     (import ./enhanced-container-module.nix macvlan-name)
     ./watchtower.nix
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
-    # (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip; }) # WIP
+    (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })
   ];
