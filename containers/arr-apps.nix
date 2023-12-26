@@ -1,4 +1,4 @@
-{ flaresolverr-ip, prowlarr-ip, sonarr-ip, radarr-ip }:
+{ flaresolverr-ip, prowlarr-ip, sonarr-ip, radarr-ip, overseerr-ip }:
 {
   virtualisation.enhanced-containers = {
     flaresolverr = {
@@ -31,6 +31,44 @@
       volumes = [
         "/watch:/watch"
         "/apps/arr-apps/sonarr/config:/config"
+        "/etc/localtime:/etc/localtime:ro"
+      ];
+      environment = {
+        PUID = "3001";
+        PGID = "3001";
+      };
+    };
+
+    radarr = {
+      image = "linuxserver/radarr";
+      ip = radarr-ip;
+      ports = [ "7878:7878" ];
+      volumes = [
+        "/watch:/watch"
+        "/apps/arr-apps/radarr/config:/config"
+        "/etc/localtime:/etc/localtime:ro"
+      ];
+      environment = {
+        PUID = "3001";
+        PGID = "3001";
+      };
+    };
+
+    recyclarr = {
+      image = "ghcr.io/recyclarr/recyclarr";
+      user = "3001:3001";
+      volumes = [
+        "/apps/arr-apps/recyclarr/config:/config"
+        "/etc/localtime:/etc/localtime:ro"
+      ];
+    };
+
+    overseerr = {
+      image = "lscr.io/linuxserver/overseerr:latest";
+      ip = overseerr-ip;
+      ports = [ "80:5055" ];
+      volumes = [
+        "/apps/arr-apps/overseerr/config:/config"
         "/etc/localtime:/etc/localtime:ro"
       ];
       environment = {

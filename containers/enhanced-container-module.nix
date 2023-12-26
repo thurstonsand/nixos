@@ -2,6 +2,7 @@ macvlan-name:
 { config, lib, ... }:
 with lib;
 let
+  # derived from: https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/virtualisation/oci-containers.nix
   containerOptions = {
     options = {
       image = mkOption {
