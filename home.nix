@@ -8,6 +8,7 @@
     username = "thurstonsand";
     homeDirectory = "/home/thurstonsand";
     packages = with pkgs; [
+      git-crypt
       fh
       git-trim
       nix-prefetch-github
@@ -18,6 +19,8 @@
 
   programs = {
     home-manager.enable = true;
+
+    # shell
     bash.enable = true;
     zsh = {
       enable = true;
@@ -57,6 +60,15 @@
         enableZshIntegration = true;
       };
 
+    # edit
+    vim = {
+      enable = true;
+      plugins = with pkgs.vimPlugins; [ vim-nix vim-lastplace ];
+      defaultEditor = true;
+      extraConfig = builtins.readFile ./dotfiles/.vimrc;
+    };
+
+    # manage
     htop.enable = true;
     git = {
       enable = true;
@@ -82,14 +94,6 @@
         };
       };
     };
-
-    vim = {
-      enable = true;
-      plugins = with pkgs.vimPlugins; [ vim-nix vim-lastplace ];
-      defaultEditor = true;
-      extraConfig = builtins.readFile ./dotfiles/.vimrc;
-    };
-
   };
 
   systemd.user.startServices = "sd-switch";

@@ -40,6 +40,7 @@ in
 
     qbittorrent = {
       image = "lscr.io/linuxserver/qbittorrent";
+      hostname = false;
       extraOptions = [
         "--network=container:gluetun"
       ];
@@ -131,6 +132,7 @@ in
       image = "${image-name}:${image-version}";
       imageFile = myanonymouse-ddns-image;
       user = "3001:3001";
+      hostname = false;
       extraOptions = [
         "--network=container:gluetun"
       ];

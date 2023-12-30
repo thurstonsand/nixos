@@ -4,7 +4,9 @@ with pkgs;
 
 let
   macvlan-name = "homenet";
+  tailscaled-ip = "192.168.1.102";
   gluetun-ip = "192.168.1.195";
+  cloudflared-ip = "192.168.1.202";
   send-ip = "192.168.1.224";
   send-redis-ip = "192.168.1.225";
   overseerr-ip = "192.168.1.228";
@@ -19,7 +21,9 @@ in
   imports = [
     (import ./enhanced-container-module.nix macvlan-name)
     ./watchtower.nix
+    (import ./tailscaled.nix { inherit tailscaled-ip; })
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
+    (import ./cloudflared.nix { inherit cloudflared-ip; })
     (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })

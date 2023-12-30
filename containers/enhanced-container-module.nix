@@ -73,6 +73,18 @@ let
         example = "192.168.1.5";
       };
 
+      hostname = mkOption {
+        type = with types; either bool nonEmptyStr;
+        default = true;
+        description = mdDoc ''
+          if hostname is set to true, use the container name for the hostname.
+          if hostname is set to false, do not set a hostname.
+          if hostname is a string, use that as the hostname.
+          default value is to use the container name for hostname.
+        '';
+        example = "false";
+      };
+
       ports = mkOption {
         type = with types; listOf str;
         default = [ ];
@@ -185,12 +197,20 @@ in
   config = mkIf (cfg != { }) {
     virtualisation.oci-containers.containers = builtins.mapAttrs
       (container-name:
-        opts@{ ip, capAdd, devices, extraOptions, ... }:
+        opts@{ ip, hostname, capAdd, devices, extraOptions, ... }:
         let
-          netOptions = lists.optionals (ip != null) [
+          ip-args = lists.optionals (ip != null) [
             "--network=${macvlan-name}"
             "--ip=${ip}"
           ];
+          hostname-args = with builtins;
+            # if bool is set to true, then use container name
+            if ((isBool hostname) && hostname) then [ "--hostname=${container-name}" ]
+            # if bool is false, then don't set the value
+            else if ((isBool hostname) && !hostname) then [ ]
+            # if string is set, use that as the hostname
+            else [ "--hostname=${hostname}" ];
+          netOptions = ip-args ++ hostname-args;
           capAddOptions = builtins.map (cap: "--cap-add=${cap}") capAdd;
           devicesOptions = builtins.map (device: "--device=${device}") devices;
           nonEmpty = value: value != null && value != [ ] && value != { };
