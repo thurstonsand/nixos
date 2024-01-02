@@ -7,6 +7,8 @@ let
   tailscaled-ip = "192.168.1.102";
   gluetun-ip = "192.168.1.195";
   cloudflared-ip = "192.168.1.202";
+  homeassistant-ip = "192.168.1.205";
+  zwave-js-ui-ip = "192.168.1.206";
   scrypted-ip = "192.168.1.210";
   send-ip = "192.168.1.224";
   send-redis-ip = "192.168.1.225";
@@ -25,6 +27,8 @@ in
     (import ./tailscaled.nix { inherit tailscaled-ip; })
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
     (import ./cloudflared.nix { inherit cloudflared-ip; })
+    (import ./homeassistant.nix { inherit homeassistant-ip; })
+    (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
     (import ./scrypted.nix { inherit scrypted-ip; })
     (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
     (import ./send.nix { inherit send-redis-ip send-ip; })
