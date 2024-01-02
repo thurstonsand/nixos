@@ -25,6 +25,7 @@ in
   imports = [
     (import ./enhanced-container-module.nix macvlan-name)
     ./watchtower.nix
+    ./ddclient.nix
     (import ./tailscaled.nix { inherit tailscaled-ip; })
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
     (import ./cloudflared.nix { inherit cloudflared-ip; })
