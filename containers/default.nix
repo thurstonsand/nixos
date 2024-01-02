@@ -15,6 +15,7 @@ let
   overseerr-ip = "192.168.1.228";
   flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
+  mosquitto-ip = "192.168.1.232";
   sonarr-ip = "192.168.1.237";
   radarr-ip = "192.168.1.239";
   prowlarr-ip = "192.168.1.241";
@@ -33,6 +34,7 @@ in
     (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })
+    (import ./mosquitto.nix { inherit mosquitto-ip; })
   ];
   config = {
     # network drives
