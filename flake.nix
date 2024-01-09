@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur.url = "github:nix-community/NUR";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,6 +18,7 @@
     { self
     , nixpkgs
     , home-manager
+    , nur
     , vscode-server
     , ...
     }:
@@ -27,6 +29,9 @@
         inherit system;
         # Allow unfree packages
         config.allowUnfree = true;
+      };
+      nur-no-pkgs = import nur {
+        nurpkgs = pkgs;
       };
     in
     {
@@ -48,6 +53,19 @@
             services.vscode-server.enable = true;
           }
         ];
+      };
+
+      defaultPackage.x86_64-linux = home-manager.defaultPackage.x86_64-linux;
+      homeConfigurations = {
+        "deck" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            {
+              nixpkgs.overlays = [ nur.overlay ];
+            }
+            ./steamdeck/home.nix
+          ];
+        };
       };
     };
 }
