@@ -19,13 +19,30 @@
     home-manager.enable = true;
 
     bash.enable = true;
-    zsh.enable = true;
+    zsh = {
+      enable = true;
+      shellAliases = {
+        switch = "nix run . -- switch --flake";
+      };
+    };
 
     vscode = {
       enable = true;
-      extensions = with pkgs; [
-        vscode-extensions.bbenoist.nix
+      enableExtensionUpdateCheck = true;
+      enableUpdateCheck = true;
+      extensions = with pkgs.vscode-extensions; [
+        mhutchie.git-graph
+        eamodio.gitlens
+        jnoortheen.nix-ide
+        ms-vscode-remote.remote-ssh
       ];
+      mutableExtensionsDir = false;
+      userSettings = {
+        "editor.formatOnSave" = true;
+        "git.autofetch" = true;
+        "git.confirmSync" = false;
+        "git.allowForcePush" = true;
+      };
     };
 
     firefox = {
@@ -38,7 +55,6 @@
           nativeMessagingHosts.packages = [ plasma5Packages.plasma-browser-integration ];
         };
       };
-      policies = { };
       # about:policies#documentation
       policies = {
         DefaultDownloadDirectory = "~/Downloads";
