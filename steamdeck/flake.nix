@@ -7,18 +7,32 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { self, nixpkgs, home-manager }: 
-  let
-    inherit (nixpkgs) lib;
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
+  outputs = { self, nixpkgs, home-manager, nur }:
+    let
+      inherit (nixpkgs) lib;
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+      nur-no-pkgs = import nur {
+        nurpkgs = pkgs;
+      };
+    in
+    {
+      defaultPackage.x86_64-linux = home-manager.defaultPackage.x86_64-linux;
+      homeConfigurations = {
+        "deck" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            {
+              nixpkgs.overlays = [ nur.overlay ];
+            }
+            ./home.nix
+          ];
+        };
+      };
     };
-  in
-  {
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-  };
 }
