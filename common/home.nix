@@ -1,20 +1,17 @@
 { pkgs, ... }:
 
 {
-  # home-manager options: https://mipmip.github.io/home-manager-option-search/
-  imports = [ ];
-
   home = {
-    username = "thurstonsand";
-    homeDirectory = "/home/thurstonsand";
     packages = with pkgs; [
       git-crypt
       fh
       git-trim
       nix-prefetch-github
+      nixpkgs-fmt
       tldr
       unzip
     ];
+    stateVersion = "23.05";
   };
 
   programs = {
@@ -54,11 +51,10 @@
         "--cmd j"
       ];
     };
-    fzf =
-      {
-        enable = true;
-        enableZshIntegration = true;
-      };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
     # edit
     vim = {
@@ -95,8 +91,4 @@
       };
     };
   };
-
-  systemd.user.startServices = "sd-switch";
-
-  home.stateVersion = "23.05";
 }

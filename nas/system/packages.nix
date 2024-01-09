@@ -5,9 +5,6 @@
   environment.systemPackages = with pkgs; [
     # to generate user password, recommend: sudo mkpasswd -m sha-512 <password>
     mkpasswd
-
-    # for formatting
-    nixpkgs-fmt
   ];
   programs.zsh.enable = true;
   # completion for system packages
