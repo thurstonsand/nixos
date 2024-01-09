@@ -6,26 +6,15 @@
     homeDirectory = "/home/deck";
 
     packages = with pkgs; [
-      fh
-      nixpkgs-fmt
       libsForQt5.plasma-browser-integration
     ];
-
-    stateVersion = "23.11";
   };
   targets.genericLinux.enable = true;
 
   programs = {
-    home-manager.enable = true;
-
-    bash.enable = true;
-    zsh = {
-      enable = true;
-      shellAliases = {
-        switch = "nix run . -- switch --flake";
-      };
+    zsh.shellAliases = {
+      switch = "nix run . -- switch --flake";
     };
-
     vscode = {
       enable = true;
       enableExtensionUpdateCheck = true;
@@ -42,6 +31,7 @@
         "git.autofetch" = true;
         "git.confirmSync" = false;
         "git.allowForcePush" = true;
+        "git.confirmForcePush" = false;
       };
     };
 

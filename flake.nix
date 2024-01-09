@@ -41,12 +41,17 @@
           {
             nixpkgs.pkgs = pkgs;
           }
-          ./system
+          ./nas/system
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.thurstonsand = import ./home.nix;
+            home-manager.users.thurstonsand = {
+              imports = [
+                (import ./common/home.nix)
+                (import ./nas/home.nix)
+              ];
+            };
           }
           vscode-server.nixosModules.default
           {
@@ -55,7 +60,7 @@
         ];
       };
 
-      defaultPackage.x86_64-linux = home-manager.defaultPackage.x86_64-linux;
+      packages.x86_64-linux.default = home-manager.defaultPackage.x86_64-linux;
       homeConfigurations = {
         "deck" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -63,6 +68,7 @@
             {
               nixpkgs.overlays = [ nur.overlay ];
             }
+            ./common/home.nix
             ./steamdeck/home.nix
           ];
         };

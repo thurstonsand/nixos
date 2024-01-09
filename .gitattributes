@@ -1,3 +1,3 @@
 .gitattributes !filter !diff
-containers/tailscale-auth.key filter=git-crypt diff=git-crypt
-containers/cloudflared.token filter=git-crypt diff=git-crypt
+nas/containers/tailscale-auth.key filter=git-crypt diff=git-crypt
+nas/containers/cloudflared.token filter=git-crypt diff=git-crypt
