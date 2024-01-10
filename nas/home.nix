@@ -7,7 +7,11 @@
     homeDirectory = "/home/thurstonsand";
   };
 
-  programs = { };
+  programs = {
+    zsh.shellAliases = {
+      switch = "sudo nixos-rebuild switch --flake";
+    };
+  };
 
   systemd.user.startServices = "sd-switch";
 }
