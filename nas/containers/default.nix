@@ -10,6 +10,7 @@ let
   homeassistant-ip = "192.168.1.205";
   zwave-js-ui-ip = "192.168.1.206";
   scrypted-ip = "192.168.1.210";
+  ntp-server-ip = "192.168.1.211";
   send-ip = "192.168.1.224";
   send-redis-ip = "192.168.1.225";
   overseerr-ip = "192.168.1.228";
@@ -33,6 +34,7 @@ in
     (import ./homeassistant.nix { inherit homeassistant-ip; })
     (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
     (import ./scrypted.nix { inherit scrypted-ip; })
+    (import ./ntp-server.nix { inherit ntp-server-ip; })
     (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })
