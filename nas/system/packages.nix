@@ -19,4 +19,43 @@
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAn2NlLBMeegizVbnIlr2UOnUwwLsxavyeH/tAzZdonqUk6rirRpRgtSkBKSSBFYwQVJqRQjmYFTJ/p8UhbjT5c= admin@ipad"
   ];
 
+  # coder for remote development
+  # BROKEN: waiting for resolution to:
+  # https://github.com/NixOS/nixpkgs/issues/266037
+  # services = {
+  #   postgresql = {
+  #     enable = true;
+  #     port = 5432;
+  #     identMap = ''
+  #       default thurstonsand coder
+  #     '';
+  #     ensureUsers = [
+  #       {
+  #         name = "coder";
+  #         ensureDBOwnership = true;
+  #         ensureClauses.login = true;
+  #       }
+  #     ];
+  #     checkConfig = true;
+  #     ensureDatabases = [
+  #       "coder"
+  #     ];
+  #   };
+  #   coder = {
+  #     enable = true;
+  #     user = "thurstonsand";
+  #     group = "thurstonsand";
+  #     homeDir = "/home/thurstonsand";
+
+  #     database = {
+  #       createLocally = false;
+  #       username = "coder";
+  #       database = "coder";
+  #       host = "127.0.0.1:5432";
+  #     };
+
+  #     listenAddress = "127.0.0.1:3000";
+  #     accessUrl = "http://coder.thurstons.house:3000";
+  #   };
+  # };
 }
