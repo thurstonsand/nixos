@@ -17,6 +17,7 @@ let
   flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
   mosquitto-ip = "192.168.1.232";
+  unifi-client-check-ip = "192.168.1.233";
   sonarr-ip = "192.168.1.237";
   radarr-ip = "192.168.1.239";
   prowlarr-ip = "192.168.1.241";
@@ -42,6 +43,10 @@ in
     (import ./send.nix { inherit send-redis-ip send-ip; })
     (import ./homarr.nix { inherit homarr-ip; })
     (import ./mosquitto.nix { inherit mosquitto-ip; })
+    (import ./unifi-client-check.nix {
+      inherit unifi-client-check-ip;
+      secrets = secrets.unifi-client-check;
+    })
   ];
   config = {
     # network drives
