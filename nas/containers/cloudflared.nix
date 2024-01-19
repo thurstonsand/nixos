@@ -1,7 +1,4 @@
-{ cloudflared-ip }:
-let
-  token = builtins.readFile ./cloudflared.token;
-in
+{ cloudflared-ip, token }:
 {
   virtualisation.enhanced-containers = {
     cloudflared = {

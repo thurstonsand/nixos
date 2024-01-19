@@ -21,6 +21,9 @@ let
   radarr-ip = "192.168.1.239";
   prowlarr-ip = "192.168.1.241";
   torrent-restarter-ip = "192.168.1.242";
+
+  # various secrets that these containers need
+  secrets = with builtins; fromJSON (readFile ./secrets.json);
 in
 {
   imports = [
@@ -28,9 +31,9 @@ in
     ./watchtower.nix
     ./ddclient.nix
     ./isponsorblocktv.nix
-    (import ./tailscaled.nix { inherit tailscaled-ip; })
+    (import ./tailscaled.nix { inherit tailscaled-ip; auth-key = secrets.tailscale-auth-key; })
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
-    (import ./cloudflared.nix { inherit cloudflared-ip; })
+    (import ./cloudflared.nix { inherit cloudflared-ip; token = secrets.cloudflare-token; })
     (import ./homeassistant.nix { inherit homeassistant-ip; })
     (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
     (import ./scrypted.nix { inherit scrypted-ip; })

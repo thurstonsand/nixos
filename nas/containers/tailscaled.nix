@@ -1,7 +1,4 @@
-{ tailscaled-ip }:
-let
-  auth-key = builtins.readFile ./tailscale-auth.key;
-in
+{ tailscaled-ip, auth-key }:
 {
   virtualisation.enhanced-containers = {
     tailscaled = {
