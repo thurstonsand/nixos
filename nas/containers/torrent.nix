@@ -31,6 +31,8 @@ in
         WIREGUARD_PRIVATE_KEY = "EI4VfvjPW0e1N5CNRb/Z4IM0pia+jOwzhrwz+O57El0=";
         WIREGUARD_ADDRESSES = "10.64.61.38/32";
         SERVER_CITIES = "Atlanta GA";
+        # hopefully this pins it to a specific ip address?
+        SERVER_HOSTNAMES = "us-atl-wg-001";
         FIREWALL_OUTBOUND_SUBNETS = "192.168.1.0/24";
         UPDATER_PERIOD = "24h";
         PUID = "3001";
@@ -93,53 +95,53 @@ in
       dependsOn = [ "qbittorrent" ];
     };
 
-    myanonymouse-ddns = with pkgs; let
-      # there were some weird SSL issues when going with scratch image,
-      # so need to base it on alpine image.
-      # there should be a better way to do this: https://github.com/NixOS/nix/issues/7180
-      # for now, to get updated values, you need to run the following:
-      # nix run nixpkgs.nix-prefetch-docker -c nix-prefetch-docker --image-name alpine --image-tag latest
-      alpine-base-image = dockerTools.pullImage {
-        imageName = "alpine";
-        imageDigest = "sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48";
-        sha256 = "0zaaibcjkrgxhp9gf50zp87yax8v2p7a1kqld94z8l62bhq0ilpa";
-      };
-      script-name = "myanonymouse-update.sh";
-      myanonymouse-update-script = writeScriptBin script-name ''
-        #!/bin/ash
+    # myanonymouse-ddns = with pkgs; let
+    # there were some weird SSL issues when going with scratch image,
+    # so need to base it on alpine image.
+    # there should be a better way to do this: https://github.com/NixOS/nix/issues/7180
+    # for now, to get updated values, you need to run the following:
+    # nix run nixpkgs#nix-prefetch-docker -- -c nix-prefetch-docker --image-name alpine --image-tag latest
+    #     alpine-base-image = dockerTools.pullImage {
+    #       imageName = "alpine";
+    #       imageDigest = "sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48";
+    #       sha256 = "0zaaibcjkrgxhp9gf50zp87yax8v2p7a1kqld94z8l62bhq0ilpa";
+    #     };
+    #     script-name = "myanonymouse-update.sh";
+    #     myanonymouse-update-script = writeScriptBin script-name ''
+    #       #!/bin/ash
 
-        echo "starting myanonymouse ddns update script"
-        sleep 10
+    #       echo "starting myanonymouse ddns update script"
+    #       sleep 10
 
-        while true; do
-          echo "updating ip being used for anonymouse"
-          curl -c /cookies/mam.cookies -b /cookies/mam.cookies https://t.myanonamouse.net/json/dynamicSeedbox.php
-          echo $?
-          sleep 129600 # 1.5 days
-        done
-      '';
-      image-name = "myanonymouse-ddns";
-      image-version = "latest";
-      myanonymouse-ddns-image = dockerTools.buildLayeredImage {
-        name = image-name;
-        tag = image-version;
-        fromImage = alpine-base-image;
-        contents = [ curl myanonymouse-update-script ];
-        config.Cmd = [ "/bin/${script-name}" ];
-      };
-    in
-    {
-      image = "${image-name}:${image-version}";
-      imageFile = myanonymouse-ddns-image;
-      user = "3001:3001";
-      hostname = false;
-      extraOptions = [
-        "--network=container:gluetun"
-      ];
-      volumes = [
-        "/apps/torrent/myanonymouse-ddns/cookies:/cookies"
-      ];
-      dependsOn = [ "gluetun" ];
-    };
+    #       while true; do
+    #         echo "updating ip being used for anonymouse"
+    #         curl -c /cookies/mam.cookies -b /cookies/mam.cookies https://t.myanonamouse.net/json/dynamicSeedbox.php
+    #         echo $?
+    #         sleep 129600 # 1.5 days
+    #       done
+    #     '';
+    #     image-name = "myanonymouse-ddns";
+    #     image-version = "latest";
+    #     myanonymouse-ddns-image = dockerTools.buildLayeredImage {
+    #       name = image-name;
+    #       tag = image-version;
+    #       fromImage = alpine-base-image;
+    #       contents = [ curl myanonymouse-update-script ];
+    #       config.Cmd = [ "/bin/${script-name}" ];
+    #     };
+    #   in
+    #   {
+    #     image = "${image-name}:${image-version}";
+    #     imageFile = myanonymouse-ddns-image;
+    #     user = "3001:3001";
+    #     hostname = false;
+    #     extraOptions = [
+    #       "--network=container:gluetun"
+    #     ];
+    #     volumes = [
+    #       "/apps/torrent/myanonymouse-ddns/cookies:/cookies"
+    #     ];
+    #     dependsOn = [ "gluetun" ];
+    #   };
   };
 }
