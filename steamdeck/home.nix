@@ -7,6 +7,10 @@
 
     packages = with pkgs; [
       libsForQt5.plasma-browser-integration
+      # this does not work
+      # 00:00:00 - Qt Fatal: Could not initialize GLX
+      # zsh: abort (core dumped)  moonlight
+      # moonlight-qt
     ];
   };
   targets.genericLinux.enable = true;
