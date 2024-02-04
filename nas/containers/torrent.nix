@@ -1,4 +1,4 @@
-{ gluetun-ip, torrent-restarter-ip }:
+{ gluetun-ip, torrent-restarter-ip, secrets }:
 { pkgs, ... }:
 let
   qbittorrent-webui-port = "80";
@@ -9,7 +9,6 @@ in
       image = "qmcgaw/gluetun";
       ip = gluetun-ip;
       capAdd = [ "NET_ADMIN" ];
-      devices = [ "/dev/net/tun:/dev/net/tun" ];
       ports = [
         "8888:8888/tcp" # HTTP proxy
         "8388:8388/tcp" # Shadowsocks
@@ -22,22 +21,33 @@ in
         "/apps/torrent/gluetun/gluetun:/gluetun"
         "/etc/localtime:/etc/localtime:ro"
       ];
-      environment = {
-        VPN_SERVICE_PROVIDER = "mullvad";
-        #VPN_TYPE = "openvpn";
-        #OPENVPN_USER = "0667895742885164";
-        VPN_TYPE = "wireguard";
-        # Driven Wombat
-        WIREGUARD_PRIVATE_KEY = "EI4VfvjPW0e1N5CNRb/Z4IM0pia+jOwzhrwz+O57El0=";
-        WIREGUARD_ADDRESSES = "10.64.61.38/32";
-        SERVER_CITIES = "Atlanta GA";
-        # hopefully this pins it to a specific ip address?
-        SERVER_HOSTNAMES = "us-atl-wg-001";
-        FIREWALL_OUTBOUND_SUBNETS = "192.168.1.0/24";
-        UPDATER_PERIOD = "24h";
-        PUID = "3001";
-        PGID = "3001";
-      };
+      environment =
+        let
+          openvpn-config = {
+            VPN_TYPE = "openvpn";
+            OPENVPN_USER = secrets.openvpn-user;
+            # hopefully this pins it to a specific ip address?
+            SERVER_HOSTNAMES = "us-atl-ovpn-104";
+          };
+          wireguard-config = {
+            VPN_TYPE = "wireguard";
+            # Simple Pup
+            WIREGUARD_PRIVATE_KEY = secrets.wireguard-private-key;
+            WIREGUARD_ADDRESSES = secrets.wireguard-addresses;
+            # hopefully this pins it to a specific ip address?
+            SERVER_HOSTNAMES = "us-atl-wg-106";
+            VPN_ENDPOINT_PORT = "52345";
+          };
+        in
+        openvpn-config // {
+          VPN_SERVICE_PROVIDER = "mullvad";
+          SERVER_COUNTRIES = "USA";
+          SERVER_CITIES = "Atlanta GA";
+          FIREWALL_OUTBOUND_SUBNETS = "192.168.1.0/24";
+          UPDATER_PERIOD = "24h";
+          PUID = "3001";
+          PGID = "3001";
+        };
     };
 
     qbittorrent = {
