@@ -33,7 +33,7 @@ in
     ./ddclient.nix
     ./isponsorblocktv.nix
     (import ./tailscaled.nix { inherit tailscaled-ip; auth-key = secrets.tailscale-auth-key; })
-    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; })
+    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
     (import ./cloudflared.nix { inherit cloudflared-ip; token = secrets.cloudflare-token; })
     (import ./homeassistant.nix { inherit homeassistant-ip; })
     (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
