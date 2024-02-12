@@ -42,6 +42,8 @@
             nixpkgs.pkgs = pkgs;
           }
           ./nas/system
+          ./nas/containers
+
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

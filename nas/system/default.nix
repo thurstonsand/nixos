@@ -2,7 +2,6 @@
   # nixos options: https://search.nixos.org/options?channel=23.05
   imports = [
     ./boot.nix
-    ../containers
     ./devices.nix
     ./hardware-configuration.nix
     ./network.nix
