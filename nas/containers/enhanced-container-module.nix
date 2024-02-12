@@ -85,6 +85,17 @@ let
         example = "false";
       };
 
+      mac-address = mkOption {
+        type = with types; nullOr str;
+        default = null;
+        description = mdDoc ''
+          Mac Address to use for this container. If left unset,
+          docker will generate one.
+          MUST start with prefix 'aa'.
+        '';
+        example = "aa:ef:66:74:39:09";
+      };
+
       ports = mkOption {
         type = with types; listOf str;
         default = [ ];
@@ -195,9 +206,18 @@ in
   };
 
   config = mkIf (cfg != { }) {
+    assertions = mapAttrsToList
+      (container-name:
+        { mac-address, ... }:
+        {
+          assertion = mac-address == null || strings.hasPrefix "aa" mac-address;
+          message = "container ${container-name} must have mac-address with prefix \"aa\"";
+        }
+      )
+      cfg;
     virtualisation.oci-containers.containers = builtins.mapAttrs
       (container-name:
-        opts@{ ip, hostname, capAdd, devices, extraOptions, ... }:
+        opts@{ ip, hostname, mac-address, capAdd, devices, extraOptions, ... }:
         let
           ip-args = lists.optionals (ip != null) [
             "--network=${macvlan-name}"
@@ -210,7 +230,8 @@ in
             else if ((isBool hostname) && !hostname) then [ ]
             # if string is set, use that as the hostname
             else [ "--hostname=${hostname}" ];
-          netOptions = ip-args ++ hostname-args;
+          mac-address-args = lists.optional (mac-address != null) "--mac-address=${mac-address}";
+          netOptions = ip-args ++ hostname-args ++ mac-address-args;
           capAddOptions = builtins.map (cap: "--cap-add=${cap}") capAdd;
           devicesOptions = builtins.map (device: "--device=${device}") devices;
           nonEmpty = value: value != null && value != [ ] && value != { };
