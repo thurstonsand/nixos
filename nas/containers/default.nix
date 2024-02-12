@@ -4,6 +4,7 @@ with pkgs;
 
 let
   macvlan-name = "homenet";
+  vlans = import ../vlans.nix;
   tailscaled-ip = "192.168.1.102";
   gluetun-ip = "192.168.1.195";
   cloudflared-ip = "192.168.1.202";
