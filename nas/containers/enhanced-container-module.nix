@@ -1,7 +1,7 @@
-macvlan-name:
 { config, lib, ... }:
 with lib;
 let
+  vlans = import ../vlans.nix;
   # derived from: https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/virtualisation/oci-containers.nix
   containerOptions = {
     options = {
@@ -219,8 +219,9 @@ in
       (container-name:
         opts@{ ip, hostname, mac-address, capAdd, devices, extraOptions, ... }:
         let
+          vlan = vlans.lookup-by-ipv4 ip;
           ip-args = lists.optionals (ip != null) [
-            "--network=${macvlan-name}"
+            "--network=${vlan.macvlan-name}"
             "--ip=${ip}"
           ];
           hostname-args = with builtins;

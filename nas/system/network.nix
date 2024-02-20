@@ -35,7 +35,6 @@
           "docker-network-${macvlan-name}" = {
             serviceConfig = {
               Type = "oneshot";
-              RemainAfterExit = "true";
             };
             wantedBy = [ "default.target" ];
             after = [ "docker.service" "docker.socket" "${vlan-name}.service" ];
