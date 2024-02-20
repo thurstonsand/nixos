@@ -11,7 +11,6 @@ let
   homeassistant-ip = "192.168.1.205";
   zwave-js-ui-ip = "192.168.1.206";
   scrypted-ip = "192.168.1.210";
-  ntp-server-ip = "192.168.1.211";
   send-ip = "192.168.1.224";
   send-redis-ip = "192.168.1.225";
   overseerr-ip = "192.168.1.228";
@@ -24,12 +23,13 @@ let
   prowlarr-ip = "192.168.1.241";
   torrent-restarter-ip = "192.168.1.242";
 
+  ntp-server-ip = "192.168.6.225";
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
 in
 {
   imports = [
-    (import ./enhanced-container-module.nix macvlan-name)
+    ./enhanced-container-module.nix
     ./watchtower.nix
     ./ddclient.nix
     ./isponsorblocktv.nix
