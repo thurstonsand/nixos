@@ -9,7 +9,6 @@ let
   cloudflared-ip = "192.168.1.202";
   homeassistant-ip = "192.168.1.205";
   zwave-js-ui-ip = "192.168.1.206";
-  scrypted-ip = "192.168.1.210";
   overseerr-ip = "192.168.1.228";
   flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
@@ -19,6 +18,8 @@ let
   radarr-ip = "192.168.1.239";
   prowlarr-ip = "192.168.1.241";
   torrent-restarter-ip = "192.168.1.242";
+
+  scrypted-ip = "192.168.5.227";
 
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
