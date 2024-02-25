@@ -5,6 +5,7 @@
       user = "3001:3001";
       entrypoint = "redis-server";
       cmd = [ "--appendonly yes" ];
+      mac-address = "aa:db:99:c2:2b:6e";
       ip = send-redis-ip;
       ports = [ "6379:6379" ];
       volumes = [
@@ -16,6 +17,7 @@
     send = {
       image = "registry.gitlab.com/timvisee/send:latest";
       user = "3001:3001";
+      mac-address = "aa:e3:da:dc:50:6e";
       ip = send-ip;
       ports = [ "80:80" ];
       volumes = [

@@ -4,6 +4,7 @@
     mosquitto = {
       image = "eclipse-mosquitto:latest";
       user = "3001:3001";
+      mac-address = "aa:bc:fa:6a:0d:1f";
       ip = mosquitto-ip;
       ports = [
         "1883:1883"

@@ -5,6 +5,7 @@
       image = "tailscale/tailscale";
       user = "3001:3001";
       capAdd = [ "NET_ADMIN" "NET_RAW" ];
+      mac-address = "aa:8a:f1:b7:c5:c5";
       ip = tailscaled-ip;
       volumes = [
         "/apps/tailscaled/var/lib:/var/lib"

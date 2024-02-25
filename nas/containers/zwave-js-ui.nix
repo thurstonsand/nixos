@@ -3,6 +3,7 @@
   virtualisation.enhanced-containers = {
     zwave-js-ui = {
       image = "zwavejs/zwave-js-ui:latest";
+      mac-address = "aa:59:de:11:2d:c0";
       ip = zwave-js-ui-ip;
       ports = [ "8091:8091" "3000:3000" ];
       volumes = [
