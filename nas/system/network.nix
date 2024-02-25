@@ -21,7 +21,7 @@
               Type = "oneshot";
               RemainAfterExit = "true";
             };
-            wantedBy = [ "default.target" ];
+            wantedBy = [ "default.target" "docker.service" "docker.socket" ];
             preStart = "${pkgs.iproute2}/bin/ip link delete ens3.${vlan-id} || true";
             script = ''
               ${pkgs.iproute2}/bin/ip link add link ens3 name ens3.${vlan-id} type vlan id ${vlan-id} &&\
@@ -52,8 +52,8 @@
         };
     in
     # since default overlaps preexisting macvlan, comment out for now
-      # create-ip-link vlans.default //
-      # create-linked-macvlan vlans.default //
+    create-ip-link vlans.default //
+    create-linked-macvlan vlans.default //
     create-ip-link vlans.iot //
     create-linked-macvlan vlans.iot //
     create-ip-link vlans.external //

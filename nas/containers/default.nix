@@ -68,24 +68,6 @@ in
       };
     };
 
-    # docker
-    systemd.services."docker-network-macvlan" = {
-      serviceConfig = {
-        Type = "oneshot";
-      };
-      wantedBy = [ "default.target" ];
-      after = [ "docker.service" "docker.socket" ];
-      script = ''
-        ${pkgs.docker}/bin/docker network inspect ${macvlan-name} > /dev/null 2>&1 ||\
-        ${pkgs.docker}/bin/docker network create\
-          -d macvlan\
-          --subnet=192.168.1.68/24\
-          --gateway=192.168.1.1\
-          -o parent=ens3\
-          ${macvlan-name}
-      '';
-    };
-
     virtualisation.docker = {
       enable = true;
       enableOnBoot = true;
