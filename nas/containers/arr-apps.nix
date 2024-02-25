@@ -65,6 +65,7 @@
 
     overseerr = {
       image = "lscr.io/linuxserver/overseerr:latest";
+      mac-address = "aa:06:ca:89:9e:df";
       ip = overseerr-ip;
       ports = [ "80:5055" ];
       volumes = [

@@ -6,10 +6,7 @@ let
   macvlan-name = "homenet";
   vlans = import ../vlans.nix;
   gluetun-ip = "192.168.1.195";
-  cloudflared-ip = "192.168.1.202";
-  homeassistant-ip = "192.168.1.205";
   zwave-js-ui-ip = "192.168.1.206";
-  overseerr-ip = "192.168.1.228";
   flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
   mosquitto-ip = "192.168.1.232";
@@ -19,7 +16,13 @@ let
   prowlarr-ip = "192.168.1.241";
   torrent-restarter-ip = "192.168.1.242";
 
-  scrypted-ip = "192.168.5.227";
+  # external vlan
+  cloudflared-ip = "192.168.5.225";
+  homeassistant-ip = "192.168.5.226";
+  overseerr-ip = "192.168.5.227";
+
+  # personal vlan
+  scrypted-ip = "192.168.6.232";
 
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
