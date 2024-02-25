@@ -37,7 +37,7 @@ rec {
       unique-subnet = builtins.elemAt octets 4;
     in
     # temporarily do this before switching over completely
-    if unique-subnet == default.unique-subnet then { macvlan-name = "homenet"; }
+    if unique-subnet == default.unique-subnet then default
     else if unique-subnet == iot.unique-subnet then iot
     else if unique-subnet == external.unique-subnet then external
     else if unique-subnet == personal.unique-subnet then personal
