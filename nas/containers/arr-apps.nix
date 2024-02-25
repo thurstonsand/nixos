@@ -3,6 +3,7 @@
   virtualisation.enhanced-containers = {
     flaresolverr = {
       image = "ghcr.io/flaresolverr/flaresolverr:latest";
+      mac-address = "aa:aa:ba:eb:4c:fc";
       ip = flaresolverr-ip;
       ports = [ "8191:8191" ];
       volumes = [
@@ -12,6 +13,7 @@
 
     prowlarr = {
       image = "lscr.io/linuxserver/prowlarr:latest";
+      mac-address = "aa:bb:ba:ba:8f:f1";
       ip = prowlarr-ip;
       ports = [ "9696:9696" ];
       volumes = [
@@ -26,6 +28,7 @@
 
     sonarr = {
       image = "linuxserver/sonarr:develop";
+      mac-address = "aa:88:44:f4:6a:d3";
       ip = sonarr-ip;
       ports = [ "8989:8989" ];
       volumes = [
@@ -41,6 +44,7 @@
 
     radarr = {
       image = "linuxserver/radarr";
+      mac-address = "aa:fc:67:fd:fb:e8";
       ip = radarr-ip;
       ports = [ "7878:7878" ];
       volumes = [
