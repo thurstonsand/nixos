@@ -5,16 +5,10 @@ with pkgs;
 let
   macvlan-name = "homenet";
   vlans = import ../vlans.nix;
-  gluetun-ip = "192.168.1.195";
   zwave-js-ui-ip = "192.168.1.206";
-  flaresolverr-ip = "192.168.1.230";
   homarr-ip = "192.168.1.231";
   mosquitto-ip = "192.168.1.232";
   unifi-client-check-ip = "192.168.1.233";
-  sonarr-ip = "192.168.1.237";
-  radarr-ip = "192.168.1.239";
-  prowlarr-ip = "192.168.1.241";
-  torrent-restarter-ip = "192.168.1.242";
 
   # external vlan
   cloudflared-ip = "192.168.5.225";
@@ -22,6 +16,12 @@ let
   overseerr-ip = "192.168.5.227";
 
   # personal vlan
+  gluetun-ip = "192.168.6.226";
+  torrent-restarter-ip = "192.168.6.227";
+  flaresolverr-ip = "192.168.6.228";
+  prowlarr-ip = "192.168.6.229";
+  sonarr-ip = "192.168.6.230";
+  radarr-ip = "192.168.6.231";
   scrypted-ip = "192.168.6.232";
 
   # various secrets that these containers need

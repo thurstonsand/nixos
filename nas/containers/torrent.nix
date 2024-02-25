@@ -7,6 +7,7 @@ in
   virtualisation.enhanced-containers = {
     gluetun = {
       image = "qmcgaw/gluetun";
+      mac-address = "aa:be:8f:17:f7:f9";
       ip = gluetun-ip;
       capAdd = [ "NET_ADMIN" ];
       ports = [
@@ -97,6 +98,7 @@ in
     {
       image = "${image-name}:${image-version}";
       imageFile = torrent-restarter-image;
+      mac-address = "aa:d1:b4:94:58:49";
       ip = torrent-restarter-ip;
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
