@@ -4,6 +4,7 @@
     homarr = {
       image = "ghcr.io/ajnart/homarr:latest";
       user = "3001:3001";
+      mac-address = "aa:6d:ac:9b:0e:cd";
       ip = homarr-ip;
       ports = [ "80:80" ];
       volumes = [

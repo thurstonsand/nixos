@@ -68,9 +68,9 @@ let
         default = null;
         description = mdDoc ''
           IP address to start the container on. If this is set, it will also switch
-          to the macvlan passed in to this module.
+          to the appropriate macvlan.
         '';
-        example = "192.168.1.5";
+        example = "192.168.6.5";
       };
 
       hostname = mkOption {

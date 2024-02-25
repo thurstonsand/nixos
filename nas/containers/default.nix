@@ -5,10 +5,10 @@ with pkgs;
 let
   macvlan-name = "homenet";
   vlans = import ../vlans.nix;
-  zwave-js-ui-ip = "192.168.1.206";
-  homarr-ip = "192.168.1.231";
-  mosquitto-ip = "192.168.1.232";
-  unifi-client-check-ip = "192.168.1.233";
+
+  # iot vlan
+  zwave-js-ui-ip = "192.168.3.225";
+  mosquitto-ip = "192.168.3.226";
 
   # external vlan
   cloudflared-ip = "192.168.5.225";
@@ -16,6 +16,7 @@ let
   overseerr-ip = "192.168.5.227";
 
   # personal vlan
+  homarr-ip = "192.168.6.225";
   gluetun-ip = "192.168.6.226";
   torrent-restarter-ip = "192.168.6.227";
   flaresolverr-ip = "192.168.6.228";
@@ -23,6 +24,7 @@ let
   sonarr-ip = "192.168.6.230";
   radarr-ip = "192.168.6.231";
   scrypted-ip = "192.168.6.232";
+  unifi-client-check-ip = "192.168.6.233";
 
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
