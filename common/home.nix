@@ -69,7 +69,7 @@
     git = {
       enable = true;
       userName = "Thurston Sandberg";
-      userEmail = "thurstonsand@hey.com";
+      userEmail = "thurstonsand@gmail.com";
       ignores = [ ".direnv" ];
       diff-so-fancy = {
         enable = true;
