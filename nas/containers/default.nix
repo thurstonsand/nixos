@@ -16,7 +16,7 @@ let
   overseerr-ip = "192.168.5.227";
 
   # personal vlan
-  homarr-ip = "192.168.6.225";
+  dashboard-ip = "192.168.6.225";
   gluetun-ip = "192.168.6.226";
   torrent-restarter-ip = "192.168.6.227";
   flaresolverr-ip = "192.168.6.228";
@@ -26,23 +26,37 @@ let
   scrypted-ip = "192.168.6.232";
   unifi-client-check-ip = "192.168.6.233";
 
+  # choosing between the two
+  dashboard = {
+    homarr = (import ./homarr.nix { homarr-ip = dashboard-ip; });
+    homepage = (import ./homepage.nix { homepage-ip = dashboard-ip; });
+  };
+
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
 in
 {
   imports = [
     ./enhanced-container-module.nix
+
+    # no exposed ip
     ./watchtower.nix
     ./ddclient.nix
     ./isponsorblocktv.nix
-    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
+
+    # iot vlan
+    (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
+    (import ./mosquitto.nix { inherit mosquitto-ip; })
+
+    # external vlan
     (import ./cloudflared.nix { inherit cloudflared-ip; token = secrets.cloudflare-token; })
     (import ./homeassistant.nix { inherit homeassistant-ip; })
-    (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
-    (import ./scrypted.nix { inherit scrypted-ip; })
     (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
-    (import ./homarr.nix { inherit homarr-ip; })
-    (import ./mosquitto.nix { inherit mosquitto-ip; })
+
+    # personal vlan
+    dashboard.homepage
+    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
+    (import ./scrypted.nix { inherit scrypted-ip; })
     (import ./unifi-client-check.nix {
       inherit unifi-client-check-ip;
       secrets = secrets.unifi-client-check;
