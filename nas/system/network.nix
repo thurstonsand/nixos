@@ -1,13 +1,13 @@
 { lib, pkgs, ... }:
 {
-  networking = {
-    # Set hostname.
-    hostName = "knownapps";
+  # Set hostname.
+  networking.hostName = "knownapps";
 
-    networkmanager = {
-      enable = true;
-      unmanaged = [ "interface-name:ve-*" ];
-    };
+  # referenced from https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
+  # as recommended by cloudflared docker container
+  boot.kernel.sysctl = {
+    "net.core.rmem_max" = 2500000;
+    "net.core.wmem_max" = 2500000;
   };
 
   systemd.services = with lib;
