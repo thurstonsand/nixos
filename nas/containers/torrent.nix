@@ -11,6 +11,7 @@ in
       ip = gluetun-ip;
       capAdd = [ "NET_ADMIN" ];
       ports = [
+        "8000:8000/tcp" # gluetun control server
         "8888:8888/tcp" # HTTP proxy
         "8388:8388/tcp" # Shadowsocks
         "8388:8388/udp" # Shadowsocks
@@ -103,6 +104,10 @@ in
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
         "/etc/localtime:/etc/localtime:ro"
+      ];
+      extraOptions = [
+        "--label"
+        "com.centurylinklabs.watchtower.enable=false"
       ];
       dependsOn = [ "qbittorrent" ];
     };
