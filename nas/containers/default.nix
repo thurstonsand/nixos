@@ -25,11 +25,13 @@ let
   radarr-ip = "192.168.6.231";
   scrypted-ip = "192.168.6.232";
   unifi-client-check-ip = "192.168.6.233";
+  docker-socket-proxy-ip = "192.168.6.234";
+  watchtower-ip = "192.168.6.235";
 
   # choosing between the two
   dashboard = {
     homarr = (import ./homarr.nix { homarr-ip = dashboard-ip; });
-    homepage = (import ./homepage.nix { homepage-ip = dashboard-ip; });
+    homepage = (import ./homepage.nix { homepage-ip = dashboard-ip; inherit docker-socket-proxy-ip; });
   };
 
   # various secrets that these containers need
@@ -40,7 +42,6 @@ in
     ./enhanced-container-module.nix
 
     # no exposed ip
-    ./watchtower.nix
     ./ddclient.nix
     ./isponsorblocktv.nix
 
@@ -57,10 +58,8 @@ in
     dashboard.homepage
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
     (import ./scrypted.nix { inherit scrypted-ip; })
-    (import ./unifi-client-check.nix {
-      inherit unifi-client-check-ip;
-      secrets = secrets.unifi-client-check;
-    })
+    (import ./unifi-client-check.nix { inherit unifi-client-check-ip; secrets = secrets.unifi-client-check; })
+    (import ./watchtower.nix { inherit watchtower-ip; secrets = secrets.watchtower; })
 
     # no longer using
     # (import ./ntp-server.nix { inherit ntp-server-ip; })

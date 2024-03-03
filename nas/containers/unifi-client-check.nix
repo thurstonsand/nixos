@@ -6,6 +6,7 @@
       mac-address = "aa:3b:95:d2:8a:cb";
       ip = unifi-client-check-ip;
       environment = {
+        "REMEMBER_NEW_DEVICES" = "true";
         "UNIFI_CONTROLLER_USER" = "localadmin";
         "UNIFI_CONTROLLER_PASSWORD" = secrets.localadmin-password;
         "UNIFI_CONTROLLER_URL" = "https://192.168.1.1:443";
