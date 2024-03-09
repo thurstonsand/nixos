@@ -3,6 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-lib.url = "github:nixos/nixpkgs/nixos-unstable?dir=lib";
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+    };
+    pre-commit-hooks-nix = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,64 +26,72 @@
   };
 
   outputs =
-    { self
+    inputs@{ self
+    , flake-parts
     , nixpkgs
+    , flake-utils
     , home-manager
     , nur
     , vscode-server
     , ...
     }:
-    let
-      inherit (nixpkgs) lib;
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        # Allow unfree packages
-        config.allowUnfree = true;
-      };
-      nur-no-pkgs = import nur {
-        nurpkgs = pkgs;
-      };
-    in
-    {
-      nixosConfigurations.knownapps = lib.nixosSystem {
-        # https://nixos.wiki/wiki/NixOS_modules
-        modules = [
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      imports = [
+        inputs.pre-commit-hooks-nix.flakeModule
+      ];
+      flake = {
+        nixosConfigurations.knownapps = nixpkgs.lib.nixosSystem
           {
-            nixpkgs.pkgs = pkgs;
-          }
-          ./nas/system
-          ./nas/containers
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.thurstonsand = {
-              imports = [
-                (import ./common/home.nix)
-                (import ./nas/home.nix)
-              ];
-            };
-          }
-          vscode-server.nixosModules.default
-          {
-            services.vscode-server.enable = true;
-          }
-        ];
+            system = "x86_64-linux";
+            modules = [
+              ./nas/system
+              ./nas/containers
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.thurstonsand = {
+                  imports = [
+                    (import ./common/home.nix)
+                    (import ./nas/home.nix)
+                  ];
+                };
+              }
+              vscode-server.nixosModules.default
+              {
+                services.vscode-server.enable = true;
+              }
+            ];
+          };
+        homeConfigurations = {
+          "deck" = home-manager.lib.homeManagerConfiguration {
+            modules = [
+              {
+                nixpkgs.overlays = [ nur.overlay ];
+              }
+              ./common/home.nix
+              ./steamdeck/home.nix
+            ];
+          };
+        };
       };
-
-      packages.x86_64-linux.default = home-manager.defaultPackage.x86_64-linux;
-      homeConfigurations = {
-        "deck" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            {
-              nixpkgs.overlays = [ nur.overlay ];
-            }
-            ./common/home.nix
-            ./steamdeck/home.nix
+      perSystem = { config, pkgs, system, ... }: {
+        packages.default = home-manager.defaultPackage."${system}";
+        devShells.default = with pkgs; mkShell {
+          shellHook = ''
+            ${config.pre-commit.installationScript}
+          '';
+          nativeBuildInputs = with pkgs.buildPackages; [
+            rustc
+            cargo
           ];
+        };
+        pre-commit = {
+          check.enable = true;
+          settings.hooks = {
+            nixpkgs-fmt.enable = true;
+          };
         };
       };
     };

@@ -9,6 +9,8 @@
     ./users.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   # enable flakes
   nix.settings = {
     # Enable flakes and new 'nix' command

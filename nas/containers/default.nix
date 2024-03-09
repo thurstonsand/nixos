@@ -81,15 +81,17 @@ in
       };
     };
 
-    virtualisation.docker = {
-      enable = true;
-      enableOnBoot = true;
-      # containers continue to run even if docker daemon crashes/restarts
-      liveRestore = true;
-      # periodically prune docker resources
-      autoPrune.enable = true;
-    };
+    virtualisation = {
+      docker = {
+        enable = true;
+        enableOnBoot = true;
+        # containers continue to run even if docker daemon crashes/restarts
+        liveRestore = true;
+        # periodically prune docker resources
+        autoPrune.enable = true;
+      };
 
-    virtualisation.oci-containers.backend = "docker";
+      oci-containers.backend = "docker";
+    };
   };
 }

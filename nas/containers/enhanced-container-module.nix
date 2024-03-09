@@ -219,6 +219,7 @@ in
       (container-name:
         opts@{ ip, hostname, mac-address, capAdd, devices, extraOptions, ... }:
         let
+          # pull-options = [ "--pull=always" ];
           vlan = vlans.lookup-by-ipv4 ip;
           ip-args = lists.optionals (ip != null) [
             "--network=${vlan.macvlan-name}"
