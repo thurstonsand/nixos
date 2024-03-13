@@ -19,6 +19,8 @@
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAn2NlLBMeegizVbnIlr2UOnUwwLsxavyeH/tAzZdonqUk6rirRpRgtSkBKSSBFYwQVJqRQjmYFTJ/p8UhbjT5c= admin@ipad"
     # iPad iSH App
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINdTIimkSmdd7yIvx2J3aqweOsuC8yve/MCJlF+KCSgX ish@ipad"
+    # Work MBP M1
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMHCHt/vhLbG3JG+BghqRiq30gvjrToRCbw4//CretXE thurstonsand@gmail.com"
   ];
 
 }
