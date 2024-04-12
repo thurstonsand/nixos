@@ -21,7 +21,7 @@
     bash.enable = true;
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
       shellAliases = {
         ll = "ls -l";

@@ -20,7 +20,10 @@
     };
     nur.url = "github:nix-community/NUR";
     vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
+      # url = "github:nix-community/nixos-vscode-server";
+      # waiting on this PR to land
+      # https://github.com/nix-community/nixos-vscode-server/pull/78
+      url = "github:Ten0/nixos-vscode-server/support_new_vscode_versions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

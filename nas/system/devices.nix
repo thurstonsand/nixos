@@ -1,22 +1,25 @@
 {
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      # Enable the GNOME Desktop Environment.
-      gdm.enable = true;
-
-      # Enable automatic login for thurstonsand.
-      autoLogin.enable = true;
-      autoLogin.user = "thurstonsand";
+  services = {
+    displayManager.autoLogin = {
+      enable = true;
+      user = "thurstonsand";
     };
 
-    desktopManager.gnome.enable = true;
+    xserver = {
+      enable = true;
+      displayManager = {
+        # Enable the GNOME Desktop Environment.
+        gdm.enable = true;
+      };
 
-    # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
+      desktopManager.gnome.enable = true;
+
+      # Configure keymap in X11
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
     };
   };
 
