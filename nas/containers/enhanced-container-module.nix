@@ -251,7 +251,7 @@ in
           services."${update-service-name}" = {
             description = "detects when ${container-name} has an update, and then restarts the container to pick up that update";
             script = ''
-              container-updater ${container-name} ${image}
+              /run/current-system/sw/bin/container-updater ${container-name} ${image}
             '';
             serviceConfig = {
               Type = "oneshot";

@@ -1,10 +1,30 @@
 { pkgs, ... }:
+let
+  container-updater = pkgs.writeScriptBin "container-updater" ''
+    #!/${pkgs.bash}/bin/bash
+    CONTAINER_NAME="$1"
+    IMAGE_NAME="$2"
+
+    CURRENT_IMAGE_ID=$(docker inspect --format='{{.Image}}' "$CONTAINER_NAME")
+
+    docker pull "$IMAGE_NAME"
+
+    NEW_IMAGE_ID=$(docker inspect --format='{{.Id}}' "$IMAGE_NAME")
+
+    if [[ "$CURRENT_IMAGE_ID" != "$NEW_IMAGE_ID" ]]; then
+        echo "Updating $CONTAINER_NAME container to $NEW_IMAGE_ID"
+        docker restart $CONTAINER_NAME
+    fi
+  '';
+in
 {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    container-updater
     # to generate user password, recommend: sudo mkpasswd -m sha-512 <password>
     mkpasswd
+    tg
   ];
   programs.zsh.enable = true;
   # completion for system packages
