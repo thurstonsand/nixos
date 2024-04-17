@@ -255,7 +255,7 @@ in
             '';
             serviceConfig = {
               Type = "oneshot";
-              User = "thurstonsand";
+              User = "root";
             };
           };
           timers."autoupdate-${container-name}" = {

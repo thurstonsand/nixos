@@ -5,15 +5,17 @@ let
     CONTAINER_NAME="$1"
     IMAGE_NAME="$2"
 
-    CURRENT_IMAGE_ID=$(docker inspect --format='{{.Image}}' "$CONTAINER_NAME")
+    CURRENT_IMAGE_ID=$(${pkgs.docker}/bin/docker inspect --format='{{.Image}}' "$CONTAINER_NAME")
 
-    docker pull "$IMAGE_NAME"
+    ${pkgs.docker}/bin/docker pull "$IMAGE_NAME"
 
-    NEW_IMAGE_ID=$(docker inspect --format='{{.Id}}' "$IMAGE_NAME")
-
+    NEW_IMAGE_ID=$(${pkgs.docker}/bin/docker inspect --format='{{.Id}}' "$IMAGE_NAME")
+    echo "Current image is $CURRENT_IMAGE_ID"
+    echo "New Image is $NEW_IMAGE_ID"
     if [[ "$CURRENT_IMAGE_ID" != "$NEW_IMAGE_ID" ]]; then
         echo "Updating $CONTAINER_NAME container to $NEW_IMAGE_ID"
-        docker restart $CONTAINER_NAME
+        ${pkgs.docker}/bin/docker rm -f $CONTAINER_NAME
+        sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake /home/thurstonsand/nixos
     fi
   '';
 in
@@ -22,6 +24,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     container-updater
+    git
     # to generate user password, recommend: sudo mkpasswd -m sha-512 <password>
     mkpasswd
     tg
