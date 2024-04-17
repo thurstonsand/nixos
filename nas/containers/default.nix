@@ -26,7 +26,6 @@ let
   scrypted-ip = "192.168.6.232";
   unifi-client-check-ip = "192.168.6.233";
   docker-socket-proxy-ip = "192.168.6.234";
-  watchtower-ip = "192.168.6.235";
 
   # choosing between the two
   dashboard = {
@@ -59,12 +58,12 @@ in
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
     (import ./scrypted.nix { inherit scrypted-ip; })
     (import ./unifi-client-check.nix { inherit unifi-client-check-ip; secrets = secrets.unifi-client-check; })
-    (import ./watchtower.nix { inherit watchtower-ip; secrets = secrets.watchtower; })
 
     # no longer using
     # (import ./ntp-server.nix { inherit ntp-server-ip; })
     # (import ./tailscaled.nix { inherit tailscaled-ip; auth-key = secrets.tailscale-auth-key; })
     # (import ./send.nix { inherit send-redis-ip send-ip; })
+    # (import ./watchtower.nix { inherit watchtower-ip; secrets = secrets.watchtower; })
   ];
   config = {
     # network drives
