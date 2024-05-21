@@ -114,7 +114,7 @@ in
 
     # to manually set this up once:
     # 1. attach to docker container:
-    #    docker exec -it bash qbittorrent
+    #    docker exec -it qbittorrent bash
     # 2. get ip address
     #    curl http://whatismyip.akamai.com
     # 3. visit this site: https://www.myanonamouse.net/preferences/index.php?view=security
@@ -126,6 +126,7 @@ in
     # 4. run the following back in docker container, replacing <session_id>:
     #    curl -b 'mam_id=<session_id>' https://t.myanonamouse.net/json/dynamicSeedbox.php
     #    should receive "Success: true" in response
+    # 5. Go back to qbittorrent and Force Reannounce
     #
     # myanonymouse-ddns = with pkgs; let
     # there were some weird SSL issues when going with scratch image,
