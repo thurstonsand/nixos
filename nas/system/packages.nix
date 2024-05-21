@@ -27,6 +27,7 @@ in
     git
     # to generate user password, recommend: sudo mkpasswd -m sha-512 <password>
     mkpasswd
+    # TODO: enhance container-updater to send results
     tg
   ];
   programs.zsh.enable = true;

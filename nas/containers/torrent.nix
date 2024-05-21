@@ -112,6 +112,21 @@ in
       dependsOn = [ "qbittorrent" ];
     };
 
+    # to manually set this up once:
+    # 1. attach to docker container:
+    #    docker exec -it bash qbittorrent
+    # 2. get ip address
+    #    curl http://whatismyip.akamai.com
+    # 3. visit this site: https://www.myanonamouse.net/preferences/index.php?view=security
+    #    add entry for ip address
+    #    navigate back to main screen
+    #    "Allow session to set dynamic seedbox IP"
+    #    "View IP locked session cookie"
+    #    copy mam_id
+    # 4. run the following back in docker container, replacing <session_id>:
+    #    curl -b 'mam_id=<session_id>' https://t.myanonamouse.net/json/dynamicSeedbox.php
+    #    should receive "Success: true" in response
+    #
     # myanonymouse-ddns = with pkgs; let
     # there were some weird SSL issues when going with scratch image,
     # so need to base it on alpine image.
