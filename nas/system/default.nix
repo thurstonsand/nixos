@@ -18,6 +18,11 @@
     # Deduplicate and optimize nix store
     auto-optimise-store = true;
   };
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
