@@ -30,6 +30,13 @@ in
     # TODO: enhance container-updater to send results
     tg
   ];
+  # limit journald log size
+  services.journald = {
+    storage = "persistent";
+    extraConfig = ''
+      SystemMaxUse=100M
+    '';
+  };
   programs.zsh.enable = true;
   # completion for system packages
   environment.pathsToLink = [ "/share/zsh" ];
