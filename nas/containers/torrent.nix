@@ -28,8 +28,6 @@ in
           openvpn-config = {
             VPN_TYPE = "openvpn";
             OPENVPN_USER = secrets.openvpn-user;
-            # hopefully this pins it to a specific ip address?
-            SERVER_HOSTNAMES = "us-atl-ovpn-104";
           };
           wireguard-config = {
             VPN_TYPE = "wireguard";
