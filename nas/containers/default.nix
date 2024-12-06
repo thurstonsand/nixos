@@ -26,6 +26,7 @@ let
   scrypted-ip = "192.168.6.232";
   unifi-client-check-ip = "192.168.6.233";
   docker-socket-proxy-ip = "192.168.6.234";
+  isponsorblocktv-ip = "192.168.6.235";
 
   # choosing between the two
   dashboard = {
@@ -42,7 +43,7 @@ in
 
     # no exposed ip
     ./ddclient.nix
-    ./isponsorblocktv.nix
+    # ./isponsorblocktv.nix
 
     # iot vlan
     (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
@@ -58,6 +59,7 @@ in
     (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
     (import ./scrypted.nix { inherit scrypted-ip; })
     (import ./unifi-client-check.nix { inherit unifi-client-check-ip; secrets = secrets.unifi-client-check; })
+    (import ./isponsorblocktv.nix { inherit isponsorblocktv-ip; })
 
     # no longer using
     # (import ./ntp-server.nix { inherit ntp-server-ip; })
