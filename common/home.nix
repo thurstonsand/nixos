@@ -88,6 +88,17 @@
         init = {
           defaultBranch = "main";
         };
+
+        # signing with 1password
+        gpg = {
+          format = "ssh";
+        };
+        commit = {
+          gpgsign = true;
+        };
+        user = {
+          signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF6GpY+hdZp60Fbnk9B03sntiJRx7OgLwutV5vJpV6P+";
+        };
       };
     };
   };
