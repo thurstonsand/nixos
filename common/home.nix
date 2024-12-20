@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home = {
     packages = with pkgs; [
       git-crypt
@@ -59,7 +57,7 @@
     # edit
     vim = {
       enable = true;
-      plugins = with pkgs.vimPlugins; [ vim-nix vim-lastplace ];
+      plugins = with pkgs.vimPlugins; [vim-nix vim-lastplace];
       defaultEditor = true;
       extraConfig = builtins.readFile ./dotfiles/.vimrc;
     };
@@ -70,7 +68,7 @@
       enable = true;
       userName = "Thurston Sandberg";
       userEmail = "thurstonsand@gmail.com";
-      ignores = [ ".direnv" ];
+      ignores = [".direnv"];
       diff-so-fancy = {
         enable = true;
       };

@@ -1,11 +1,10 @@
-{ scrypted-ip }:
-{
+{scrypted-ip}: {
   virtualisation.enhanced-containers = {
     scrypted = {
       image = "koush/scrypted";
       mac-address = "aa:83:cc:9f:fc:1e";
       ip = scrypted-ip;
-      ports = [ "11080:11080" "10443:10443" ];
+      ports = ["11080:11080" "10443:10443"];
       volumes = [
         # Avahi Daemon mDNS
         # "/var/run/dbus:/var/run/dbus"
