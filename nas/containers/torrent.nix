@@ -1,15 +1,16 @@
-{ gluetun-ip, torrent-restarter-ip, secrets }:
-{ pkgs, ... }:
-let
-  qbittorrent-webui-port = "80";
-in
 {
+  gluetun-ip,
+  torrent-restarter-ip,
+  secrets,
+}: {pkgs, ...}: let
+  qbittorrent-webui-port = "80";
+in {
   virtualisation.enhanced-containers = {
     gluetun = {
       image = "qmcgaw/gluetun";
       mac-address = "aa:be:8f:17:f7:f9";
       ip = gluetun-ip;
-      capAdd = [ "NET_ADMIN" ];
+      capAdd = ["NET_ADMIN"];
       ports = [
         "8000:8000/tcp" # gluetun control server
         "8888:8888/tcp" # HTTP proxy
@@ -23,23 +24,23 @@ in
         "/apps/torrent/gluetun/gluetun:/gluetun"
         "/etc/localtime:/etc/localtime:ro"
       ];
-      environment =
-        let
-          openvpn-config = {
-            VPN_TYPE = "openvpn";
-            OPENVPN_USER = secrets.openvpn-user;
-          };
-          wireguard-config = {
-            VPN_TYPE = "wireguard";
-            # Simple Pup
-            WIREGUARD_PRIVATE_KEY = secrets.wireguard-private-key;
-            WIREGUARD_ADDRESSES = secrets.wireguard-addresses;
-            # hopefully this pins it to a specific ip address?
-            SERVER_HOSTNAMES = "us-atl-wg-106";
-            VPN_ENDPOINT_PORT = "52345";
-          };
-        in
-        openvpn-config // {
+      environment = let
+        openvpn-config = {
+          VPN_TYPE = "openvpn";
+          OPENVPN_USER = secrets.openvpn-user;
+        };
+        wireguard-config = {
+          VPN_TYPE = "wireguard";
+          # Simple Pup
+          WIREGUARD_PRIVATE_KEY = secrets.wireguard-private-key;
+          WIREGUARD_ADDRESSES = secrets.wireguard-addresses;
+          # hopefully this pins it to a specific ip address?
+          SERVER_HOSTNAMES = "us-atl-wg-106";
+          VPN_ENDPOINT_PORT = "52345";
+        };
+      in
+        openvpn-config
+        // {
           VPN_SERVICE_PROVIDER = "mullvad";
           SERVER_COUNTRIES = "USA";
           SERVER_CITIES = "Atlanta GA";
@@ -67,7 +68,7 @@ in
         PUID = "3001";
         PGID = "3001";
       };
-      dependsOn = [ "gluetun" ];
+      dependsOn = ["gluetun"];
     };
 
     torrent-restarter = with pkgs; let
@@ -91,11 +92,10 @@ in
       torrent-restarter-image = dockerTools.buildLayeredImage {
         name = image-name;
         tag = image-version;
-        contents = [ bash docker coreutils curlMinimal torrent-restarter-script ];
-        config.Cmd = [ "/bin/${script-name}" ];
+        contents = [bash docker coreutils curlMinimal torrent-restarter-script];
+        config.Cmd = ["/bin/${script-name}"];
       };
-    in
-    {
+    in {
       image = "${image-name}:${image-version}";
       imageFile = torrent-restarter-image;
       mac-address = "aa:d1:b4:94:58:49";
@@ -108,7 +108,7 @@ in
         "--label"
         "com.centurylinklabs.watchtower.enable=false"
       ];
-      dependsOn = [ "qbittorrent" ];
+      dependsOn = ["qbittorrent"];
     };
 
     # to manually set this up once:

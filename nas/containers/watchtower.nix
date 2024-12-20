@@ -1,11 +1,13 @@
-{ watchtower-ip, secrets }:
 {
+  watchtower-ip,
+  secrets,
+}: {
   virtualisation.enhanced-containers = {
     watchtower = {
       image = "containrrr/watchtower";
       mac-address = "aa:3d:69:30:d7:c8";
       ip = watchtower-ip;
-      ports = [ "8080" ];
+      ports = ["8080"];
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
         "/etc/localtime:/etc/localtime:ro"

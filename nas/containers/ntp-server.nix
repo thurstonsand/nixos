@@ -1,5 +1,4 @@
-{ ntp-server-ip }:
-{
+{ntp-server-ip}: {
   virtualisation.enhanced-containers = {
     ntp-server = {
       image = "simonrupf/chronyd";

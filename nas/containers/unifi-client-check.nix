@@ -1,5 +1,7 @@
-{ unifi-client-check-ip, secrets }:
 {
+  unifi-client-check-ip,
+  secrets,
+}: {
   virtualisation.enhanced-containers = {
     unifi-client-check = {
       image = "zsamuels28/unificlientalerts:latest";

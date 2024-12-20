@@ -1,8 +1,9 @@
-{ pkgs, lib, ... }:
-
-with pkgs;
-
-let
+{
+  pkgs,
+  lib,
+  ...
+}:
+with pkgs; let
   macvlan-name = "homenet";
   vlans = import ../vlans.nix;
 
@@ -30,14 +31,16 @@ let
 
   # choosing between the two
   dashboard = {
-    homarr = (import ./homarr.nix { homarr-ip = dashboard-ip; });
-    homepage = (import ./homepage.nix { homepage-ip = dashboard-ip; inherit docker-socket-proxy-ip; });
+    homarr = import ./homarr.nix {homarr-ip = dashboard-ip;};
+    homepage = import ./homepage.nix {
+      homepage-ip = dashboard-ip;
+      inherit docker-socket-proxy-ip;
+    };
   };
 
   # various secrets that these containers need
   secrets = with builtins; fromJSON (readFile ./secrets.json);
-in
-{
+in {
   imports = [
     ./enhanced-container-module.nix
 
@@ -46,20 +49,29 @@ in
     # ./isponsorblocktv.nix
 
     # iot vlan
-    (import ./zwave-js-ui.nix { inherit zwave-js-ui-ip; })
-    (import ./mosquitto.nix { inherit mosquitto-ip; })
+    (import ./zwave-js-ui.nix {inherit zwave-js-ui-ip;})
+    (import ./mosquitto.nix {inherit mosquitto-ip;})
 
     # external vlan
-    (import ./cloudflared.nix { inherit cloudflared-ip; token = secrets.cloudflare-token; })
-    (import ./homeassistant.nix { inherit homeassistant-ip; })
-    (import ./arr-apps.nix { inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip; })
+    (import ./cloudflared.nix {
+      inherit cloudflared-ip;
+      token = secrets.cloudflare-token;
+    })
+    (import ./homeassistant.nix {inherit homeassistant-ip;})
+    (import ./arr-apps.nix {inherit flaresolverr-ip prowlarr-ip sonarr-ip radarr-ip overseerr-ip;})
 
     # personal vlan
     dashboard.homepage
-    (import ./torrent.nix { inherit gluetun-ip torrent-restarter-ip; secrets = secrets.torrent; })
-    (import ./scrypted.nix { inherit scrypted-ip; })
-    (import ./unifi-client-check.nix { inherit unifi-client-check-ip; secrets = secrets.unifi-client-check; })
-    (import ./isponsorblocktv.nix { inherit isponsorblocktv-ip; })
+    (import ./torrent.nix {
+      inherit gluetun-ip torrent-restarter-ip;
+      secrets = secrets.torrent;
+    })
+    (import ./scrypted.nix {inherit scrypted-ip;})
+    (import ./unifi-client-check.nix {
+      inherit unifi-client-check-ip;
+      secrets = secrets.unifi-client-check;
+    })
+    (import ./isponsorblocktv.nix {inherit isponsorblocktv-ip;})
 
     # no longer using
     # (import ./ntp-server.nix { inherit ntp-server-ip; })
@@ -73,12 +85,12 @@ in
       "/apps" = {
         device = "192.168.1.68:/mnt/performance/docker";
         fsType = "nfs";
-        options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=60m" ];
+        options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=60m"];
       };
       "/watch" = {
         device = "192.168.1.68:/mnt/capacity/watch";
         fsType = "nfs";
-        options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=60m" ];
+        options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=60m"];
       };
     };
 
