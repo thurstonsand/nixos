@@ -21,5 +21,9 @@ jobs:
       - name: Enable nix flakes
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - uses: amplium/git-crypt-action@master
+        with:
+          key_encoded: ${{ secrets.GIT_CRYPT_KEY_BASE64 }}
+
       - name: Run nix flake check
         run: nix flake check

@@ -3,6 +3,7 @@
     ./enhanced-homebrew.nix
     ./homebrew.nix
     ./nix-core.nix
+    ./packages.nix
     ./users.nix
   ];
 
