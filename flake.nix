@@ -80,6 +80,7 @@
             inherit inputs;
             system = "aarch64-darwin";
             modules = [
+              ./darwin/system
               home-manager.darwinModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -87,7 +88,7 @@
                 home-manager.users.thurstonsand = {
                   imports = [
                     (import ./common/home.nix)
-                    # (import ./darwin/home.nix)
+                    (import ./darwin/home.nix)
                   ];
                 };
               }
@@ -114,7 +115,7 @@
         ...
       }: {
         packages.default = home-manager.defaultPackage."${system}";
-        formatter = nixpkgs.legacyPackages.${system}.alejandra;
+        formatter = pkgs.alejandra;
         devShells.default = with pkgs;
           mkShell {
             shellHook = ''
