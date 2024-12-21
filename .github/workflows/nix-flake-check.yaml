@@ -1,0 +1,41 @@
+name: Nix Flake Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Enable nix flakes
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Setup git-crypt (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: amplium/git-crypt-action@master
+        with:
+          key_encoded: ${{ secrets.GIT_CRYPT_KEY_BASE64 }}
+
+      - name: Setup git-crypt (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install git-crypt
+          echo "${{ secrets.GIT_CRYPT_KEY_BASE64 }}" | base64 --decode > git-crypt.key
+          git-crypt unlock git-crypt.key
+          rm git-crypt.key
+          git-crypt status  # Verify unlock was successful
+          rm -rf .git/git-crypt  # Clean up git-crypt files from repository
+
+      - name: Run nix flake check
+        run: nix flake check
