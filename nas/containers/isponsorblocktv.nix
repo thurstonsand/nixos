@@ -1,5 +1,4 @@
-{ isponsorblocktv-ip }:
-{
+{isponsorblocktv-ip}: {
   virtualisation.enhanced-containers = {
     isponsorblocktv = {
       image = "ghcr.io/dmunozv04/isponsorblocktv";

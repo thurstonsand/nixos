@@ -1,13 +1,16 @@
-{ send-redis-ip, send-ip }: {
+{
+  send-redis-ip,
+  send-ip,
+}: {
   virtualisation.enhanced-containers = {
     send-redis = {
       image = "redis:alpine";
       user = "3001:3001";
       entrypoint = "redis-server";
-      cmd = [ "--appendonly yes" ];
+      cmd = ["--appendonly yes"];
       mac-address = "aa:db:99:c2:2b:6e";
       ip = send-redis-ip;
-      ports = [ "6379:6379" ];
+      ports = ["6379:6379"];
       volumes = [
         "/apps/send/redis/data:/data"
         "/etc/localtime:/etc/localtime:ro"
@@ -19,7 +22,7 @@
       user = "3001:3001";
       mac-address = "aa:e3:da:dc:50:6e";
       ip = send-ip;
-      ports = [ "80:80" ];
+      ports = ["80:80"];
       volumes = [
         "/watch/send/uploads:/uploads"
         "/etc/localtime:/etc/localtime:ro"
@@ -36,7 +39,7 @@
         SEND_FOOTER_CLI_URL = "";
         SEND_FOOTER_SOURCE_URL = "";
       };
-      dependsOn = [ "send-redis" ];
+      dependsOn = ["send-redis"];
     };
   };
 }

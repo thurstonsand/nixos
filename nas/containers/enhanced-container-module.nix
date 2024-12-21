@@ -1,6 +1,10 @@
-{ config, lib, ... }:
-with lib; with builtins;
-let
+{
+  config,
+  lib,
+  ...
+}:
+with lib;
+with builtins; let
   vlans = import ../vlans.nix;
   # derived from: https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/virtualisation/oci-containers.nix
   containerOptions = {
@@ -28,7 +32,7 @@ let
 
       capAdd = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc "capabilities to enable";
         example = literalExpression ''
           ["NET_ADMIN"]
@@ -44,7 +48,7 @@ let
 
       cmd = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc "Commandline arguments to pass to the image's entrypoint.";
         example = literalExpression ''
           ["--port=9000"]
@@ -53,7 +57,7 @@ let
 
       environment = mkOption {
         type = with types; attrsOf str;
-        default = { };
+        default = {};
         description = mdDoc "Environment variables to set for this container.";
         example = literalExpression ''
           {
@@ -98,7 +102,7 @@ let
 
       ports = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc ''
           Network ports to publish from the container to the outer host.
 
@@ -140,7 +144,7 @@ let
 
       volumes = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc ''
           List of volumes to attach to this container.
 
@@ -161,7 +165,7 @@ let
 
       devices = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc "List of devices to attach to this container.";
         example = literalExpression ''
           [ "/dev/net/tun:/dev/net/tun" ]
@@ -170,7 +174,7 @@ let
 
       dependsOn = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc ''
           Define which other containers this one depends on. They will be added to both After and Requires for the unit.
 
@@ -188,7 +192,7 @@ let
 
       extraOptions = mkOption {
         type = with types; listOf str;
-        default = [ ];
+        default = [];
         description = mdDoc "Extra options for {command}`docker run`.";
         example = literalExpression ''
           ["--network=host"]
@@ -197,90 +201,96 @@ let
     };
   };
   cfg = config.virtualisation.enhanced-containers;
-in
-{
+in {
   options.virtualisation.enhanced-containers = mkOption {
     type = with types; attrsOf (submodule containerOptions);
-    default = { };
+    default = {};
     description = mdDoc "OCI (Docker) containers to run as systemd services.";
   };
 
-  config =
-    let
-      # same definition as concatMapAttrs, but with recursiveUpdate instead of mergeAttrs
-      # potential alternative solution: https://gist.github.com/udf/4d9301bdc02ab38439fd64fbda06ea43
-      concatMapAttrsRecursive = f: v:
-        foldl' recursiveUpdate { }
-          (attrValues
-            (mapAttrs f v)
-          );
-      container-cfg = (container-name:
-        opts@{ ip, hostname, mac-address, capAdd, devices, extraOptions, ... }:
-        let
-          # pull-options = [ "--pull=always" ];
-          vlan = vlans.lookup-by-ipv4 ip;
-          ip-args = lists.optionals (ip != null) [
-            "--network=${vlan.macvlan-name}"
-            "--ip=${ip}"
-          ];
-          hostname-args =
-            # if bool is set to true, then use container name
-            if ((isBool hostname) && hostname) then [ "--hostname=${container-name}" ]
-            # if bool is false, then don't set the value
-            else if ((isBool hostname) && !hostname) then [ ]
-            # if string is set, use that as the hostname
-            else [ "--hostname=${hostname}" ];
-          mac-address-args = lists.optional (mac-address != null) "--mac-address=${mac-address}";
-          netOptions = ip-args ++ hostname-args ++ mac-address-args;
-          capAddOptions = map (cap: "--cap-add=${cap}") capAdd;
-          devicesOptions = map (device: "--device=${device}") devices;
-          nonEmpty = value: value != null && value != [ ] && value != { };
-          addIfExists = opts: attrsets.foldlAttrs (attrs: key: value: attrs // attrsets.optionalAttrs (nonEmpty value) { "${key}" = value; }) { } opts;
-        in
-        {
-          autoStart = true;
-          extraOptions = extraOptions ++ netOptions ++ capAddOptions ++ devicesOptions;
-        } // addIfExists { inherit (opts) image imageFile entrypoint cmd environment ports user volumes dependsOn; });
-
-      containers-to-autoupdate = filterAttrs (_: { image, ... }: image != null) cfg;
-      systemd-cfg = (container-name: { image, ... }:
-        let
-          update-service-name = "update-${container-name}";
-        in
-        {
-          services."${update-service-name}" = {
-            description = "detects when ${container-name} has an update, and then restarts the container to pick up that update";
-            script = ''
-              /run/current-system/sw/bin/container-updater ${container-name} ${image}
-            '';
-            serviceConfig = {
-              Type = "oneshot";
-              User = "root";
-            };
-          };
-          timers."autoupdate-${container-name}" = {
-            description = "timer for update-${container-name}";
-            wantedBy = [ "timers.target" ];
-            timerConfig = {
-              OnCalendar = "hourly";
-              Persistent = true;
-              Unit = "${update-service-name}.service";
-            };
-          };
-        });
+  config = let
+    # same definition as concatMapAttrs, but with recursiveUpdate instead of mergeAttrs
+    # potential alternative solution: https://gist.github.com/udf/4d9301bdc02ab38439fd64fbda06ea43
+    concatMapAttrsRecursive = f: v:
+      foldl' recursiveUpdate {}
+      (
+        attrValues
+        (mapAttrs f v)
+      );
+    container-cfg = container-name: opts @ {
+      ip,
+      hostname,
+      mac-address,
+      capAdd,
+      devices,
+      extraOptions,
+      ...
+    }: let
+      # pull-options = [ "--pull=always" ];
+      vlan = vlans.lookup-by-ipv4 ip;
+      ip-args = lists.optionals (ip != null) [
+        "--network=${vlan.macvlan-name}"
+        "--ip=${ip}"
+      ];
+      hostname-args =
+        # if bool is set to true, then use container name
+        if ((isBool hostname) && hostname)
+        then ["--hostname=${container-name}"]
+        # if bool is false, then don't set the value
+        else if ((isBool hostname) && !hostname)
+        then []
+        # if string is set, use that as the hostname
+        else ["--hostname=${hostname}"];
+      mac-address-args = lists.optional (mac-address != null) "--mac-address=${mac-address}";
+      netOptions = ip-args ++ hostname-args ++ mac-address-args;
+      capAddOptions = map (cap: "--cap-add=${cap}") capAdd;
+      devicesOptions = map (device: "--device=${device}") devices;
+      nonEmpty = value: value != null && value != [] && value != {};
+      addIfExists = opts: attrsets.foldlAttrs (attrs: key: value: attrs // attrsets.optionalAttrs (nonEmpty value) {"${key}" = value;}) {} opts;
     in
-    mkIf (cfg != { })
       {
-        assertions = mapAttrsToList
-          (container-name:
-            { mac-address, ... }:
-            {
-              assertion = mac-address == null || strings.hasPrefix "aa" mac-address;
-              message = "container ${container-name} must have mac-address with prefix \"aa\"";
-            }
-          )
-          cfg;
-        virtualisation.oci-containers.containers = mapAttrs container-cfg cfg;
-        systemd = concatMapAttrsRecursive systemd-cfg containers-to-autoupdate;
+        autoStart = true;
+        extraOptions = extraOptions ++ netOptions ++ capAddOptions ++ devicesOptions;
+      }
+      // addIfExists {inherit (opts) image imageFile entrypoint cmd environment ports user volumes dependsOn;};
+
+    containers-to-autoupdate = filterAttrs (_: {image, ...}: image != null) cfg;
+    systemd-cfg = container-name: {image, ...}: let
+      update-service-name = "update-${container-name}";
+    in {
+      services."${update-service-name}" = {
+        description = "detects when ${container-name} has an update, and then restarts the container to pick up that update";
+        script = ''
+          /run/current-system/sw/bin/container-updater ${container-name} ${image}
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+        };
       };
+      timers."autoupdate-${container-name}" = {
+        description = "timer for update-${container-name}";
+        wantedBy = ["timers.target"];
+        timerConfig = {
+          OnCalendar = "hourly";
+          Persistent = true;
+          Unit = "${update-service-name}.service";
+        };
+      };
+    };
+  in
+    mkIf (cfg != {})
+    {
+      assertions =
+        mapAttrsToList
+        (
+          container-name: {mac-address, ...}: {
+            assertion = mac-address == null || strings.hasPrefix "aa" mac-address;
+            message = "container ${container-name} must have mac-address with prefix \"aa\"";
+          }
+        )
+        cfg;
+      virtualisation.oci-containers.containers = mapAttrs container-cfg cfg;
+      systemd = concatMapAttrsRecursive systemd-cfg containers-to-autoupdate;
+    };
 }

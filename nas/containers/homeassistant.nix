@@ -1,11 +1,10 @@
-{ homeassistant-ip }:
-{
+{homeassistant-ip}: {
   virtualisation.enhanced-containers = {
     homeassistant = {
       image = "ghcr.io/home-assistant/home-assistant:stable";
       mac-address = "aa:7a:ef:16:ff:bf";
       ip = homeassistant-ip;
-      ports = [ "80:80" ];
+      ports = ["80:80"];
       volumes = [
         "/apps/homeassistant/config:/config"
         "/etc/localtime:/etc/localtime:ro"

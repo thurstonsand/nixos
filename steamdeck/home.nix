@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home = {
     username = "deck";
     homeDirectory = "/home/deck";
@@ -41,14 +39,15 @@
 
     firefox = {
       enable = true;
-      package = with pkgs; firefox.override {
-        cfg = {
-          preferences = {
-            "widget.use-xdg-desktop-portal.file-picker" = 1;
+      package = with pkgs;
+        firefox.override {
+          cfg = {
+            preferences = {
+              "widget.use-xdg-desktop-portal.file-picker" = 1;
+            };
+            nativeMessagingHosts.packages = [plasma5Packages.plasma-browser-integration];
           };
-          nativeMessagingHosts.packages = [ plasma5Packages.plasma-browser-integration ];
         };
-      };
       # about:policies#documentation
       policies = {
         DefaultDownloadDirectory = "~/Downloads";
@@ -81,7 +80,10 @@
           plasma-integration
         ];
         bookmarks = [
-          { name = "Steam"; url = "https://store.steampowered.com/"; }
+          {
+            name = "Steam";
+            url = "https://store.steampowered.com/";
+          }
         ];
       };
     };

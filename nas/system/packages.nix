@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   container-updater = pkgs.writeScriptBin "container-updater" ''
     #!/${pkgs.bash}/bin/bash
     CONTAINER_NAME="$1"
@@ -18,8 +17,7 @@ let
         sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake /home/thurstonsand/nixos
     fi
   '';
-in
-{
+in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -39,7 +37,7 @@ in
   };
   programs.zsh.enable = true;
   # completion for system packages
-  environment.pathsToLink = [ "/share/zsh" ];
+  environment.pathsToLink = ["/share/zsh"];
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -49,5 +47,4 @@ in
     # iPad Blink App
     "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAn2NlLBMeegizVbnIlr2UOnUwwLsxavyeH/tAzZdonqUk6rirRpRgtSkBKSSBFYwQVJqRQjmYFTJ/p8UhbjT5c= admin@ipad"
   ];
-
 }

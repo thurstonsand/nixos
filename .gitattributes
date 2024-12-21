@@ -1,2 +1,2 @@
 .gitattributes !filter !diff
-nas/containers/secrets.json filter=git-crypt diff=git-crypt
+nas/containers/secrets.json filter=git-crypt diff=git-crypt linguist-generated=true

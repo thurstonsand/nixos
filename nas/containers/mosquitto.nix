@@ -1,5 +1,4 @@
-{ mosquitto-ip }:
-{
+{mosquitto-ip}: {
   virtualisation.enhanced-containers = {
     mosquitto = {
       image = "eclipse-mosquitto:latest";
