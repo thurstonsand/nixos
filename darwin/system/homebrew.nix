@@ -31,7 +31,6 @@
       "warp"
       "wifiman"
       "windsurf"
-      "zed"
     ];
 
     validateMasApps = true;
