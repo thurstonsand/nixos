@@ -7,6 +7,7 @@ in {
   };
   programs = {
     zsh.shellAliases = {
+      bd = "brew desc";
       switch = "darwin-rebuild switch --flake /Users/thurstonsand/Develop/nixos";
     };
   };

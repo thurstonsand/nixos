@@ -31,6 +31,7 @@
       "setapp"
       "warp"
       "wifiman"
+      "windsurf"
       "zed"
     ];
 
@@ -38,6 +39,7 @@
     # NOTE: apps removed from this list are not uninstalled
     # a limitation of Homebrew Bundle
     masApps = {
+      "Acorn 8" = 6737921844;
       "1Password for Safari" = 1569813296;
       "Access" = 6469049274;
       "Copilot" = 1447330651;
@@ -46,6 +48,7 @@
       "Mela" = 1568924476;
       "NextDNS" = 1464122853;
       "Parcel" = 639968404;
+      "Play: Save Videos Watch Later" = 1596506190;
       "Save to Reader" = 1640236961;
       "Telegram" = 747648890;
       "WhatsApp" = 310633997;
