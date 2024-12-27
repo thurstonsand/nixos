@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Merge to Main and Cleanup",
+      "type": "shell",
+      "command": "branch=$(git branch --format='%(refname:short)' | grep -v '^main$' | fzf --height 40% --layout=reverse) && ${userHome}/.windsurf/scripts/merge-to-main.sh \"$branch\"",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"  
+      },
+      "group": {
+        "kind": "none"
+      }
+    }
+  ]
+}
