@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
+    graphite-cli
     imagemagick
     nil
     (symlinkJoin {
