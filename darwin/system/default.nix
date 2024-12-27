@@ -2,6 +2,7 @@
   imports = [
     ./enhanced-homebrew.nix
     ./homebrew.nix
+    ./launchd.nix
     ./nix-core.nix
     ./packages.nix
     ./users.nix

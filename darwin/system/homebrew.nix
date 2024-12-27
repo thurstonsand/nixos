@@ -8,16 +8,19 @@
       upgrade = true;
     };
     global = {
-      autoUpdate = true;
+      autoUpdate = false;
     };
+
+    taps = [
+      "domt4/autoupdate"
+    ];
 
     casks = [
       "1password"
       "1password-cli"
-      "chatgpt"
-      "discord"
       "arc"
       "beeper"
+      "chatgpt"
       "contexts"
       "discord"
       "fantastical"

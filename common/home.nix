@@ -2,9 +2,9 @@
   home = {
     packages = with pkgs; [
       ack
+      fh
       git-credential-manager
       git-crypt
-      fh
       git-trim
       nix-prefetch-github
       prettyping
