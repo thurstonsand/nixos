@@ -4,6 +4,7 @@
     nil
     # TODO: wait for 1.69 to come out:
     # https://github.com/rclone/rclone/pull/7717
+    # also take a look at https://github.com/l3uddz/cloudplow?tab=readme-ov-file#automatic-scheduled
     # rclone
     (symlinkJoin {
       name = "code"; # Name of the resulting package

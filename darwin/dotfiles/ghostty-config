@@ -1,0 +1,27 @@
+font-family = Mononoki Nerd Font Mono
+# also change the window title at the top
+window-title-font-family = Mononoki Nerd Font Mono Bold
+font-size = 14
+
+# if not inheriting from a previous window
+working-directory = /Users/thurstonsand/Develop
+# may cause kernel panics with some external displays
+window-vsync = false
+window-save-state = always
+
+confirm-close-surface = false
+
+quick-terminal-position = bottom
+quick-terminal-animation-duration = 0.08
+
+shell-integration-features = true
+
+macos-non-native-fullscreen = visible-menu
+
+auto-update = download
+auto-update-channel = tip
+
+theme = dark:catppuccin-mocha,light:catppuccin-latte
+
+keybind = global:cmd+shift+`=toggle_quick_terminal
+keybind = cmd+enter=ignore

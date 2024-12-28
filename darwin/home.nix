@@ -12,7 +12,7 @@ in {
         force = true;
       };
       "Library/Application Support/Windsurf/User/tasks.json" = {
-        source = ./dotfiles/windsurf-tasks.json;
+        source = ./dotfiles/scripts/windsurf-tasks.json;
         force = true;
       };
       ".windsurf/scripts/merge-to-main.sh" = {
@@ -22,6 +22,8 @@ in {
       };
     };
   };
+  xdg.configFile."ghostty/config".source = ./dotfiles/ghostty-config;
+
   programs = {
     zsh.shellAliases = {
       bd = "brew desc";
