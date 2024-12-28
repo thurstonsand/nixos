@@ -5,7 +5,11 @@
       fh
       git-credential-manager
       git-crypt
-      git-trim
+      # TODO: remove the override once this bug is fixed
+      # got error where zlib headers were not found
+      (pkgs.git-trim.overrideAttrs (old: {
+        buildInputs = (old.buildInputs or []) ++ [pkgs.zlib];
+      }))
       nix-prefetch-github
       prettyping
       tldr

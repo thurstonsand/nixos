@@ -2,3 +2,4 @@
 2. you always use the latest stable versions, commands, and techniques offered by nix, nix-darwin, and home-manager
 3. when creating modules, or any other functions, minimize which imports are included; if `pkgs` is the only thing being used, that should be the only import
 4. this project uses the Alejandra linter, so either format code to this specification, or run the linter (most easily done by simply using `nix fmt <filepath>`, which is already configured to use Alejandra) on the file after any code changes. this can be done without asking permission
+5. I have configured an alias to rebuild my nix configuration: `switch`. while it is only possible for me to use this alias, if you see it, then that means I have run the rebuild command for my platform. You are still capable of using the rebuild command directly, so please use that instead of the alias
