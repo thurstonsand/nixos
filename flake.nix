@@ -24,6 +24,10 @@
     nur.url = "github:nix-community/NUR";
     # don't use "follows" for nixpkgs here, as this can cause compat issues
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+    nvchad4nix = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     vscode-server = {
       # url = "github:nix-community/nixos-vscode-server";
       # waiting on this PR to land
@@ -42,6 +46,7 @@
     darwin,
     determinate,
     nur,
+    nvchad4nix,
     vscode-server,
     ...
   }:
@@ -60,13 +65,16 @@
               ./nas/containers
               home-manager.nixosModules.home-manager
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.thurstonsand = {
-                  imports = [
-                    (import ./common/home.nix)
-                    (import ./nas/home.nix)
-                  ];
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  users.thurstonsand = {
+                    imports = [
+                      inputs.nvchad4nix.homeManagerModule
+                      (import ./common/home.nix)
+                      (import ./nas/home.nix)
+                    ];
+                  };
                 };
               }
               vscode-server.nixosModules.default
@@ -83,13 +91,16 @@
               ./darwin/system
               home-manager.darwinModules.home-manager
               {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.thurstonsand = {
-                  imports = [
-                    (import ./common/home.nix)
-                    (import ./darwin/home.nix)
-                  ];
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  users.thurstonsand = {
+                    imports = [
+                      inputs.nvchad4nix.homeManagerModule
+                      (import ./common/home.nix)
+                      (import ./darwin/home.nix)
+                    ];
+                  };
                 };
               }
               determinate.darwinModules.default

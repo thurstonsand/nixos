@@ -513,6 +513,44 @@
         "type": "github"
       }
     },
+    "nvchad-starter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728129783,
+        "narHash": "sha256-SVpep7lVX0isYsUtscvgA7Ga3YXt/2jwQQCYkYadjiM=",
+        "owner": "NvChad",
+        "repo": "starter",
+        "rev": "d0c602f5f155d4d1261609219e9b8a61e936d681",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NvChad",
+        "ref": "main",
+        "repo": "starter",
+        "type": "github"
+      }
+    },
+    "nvchad4nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nvchad-starter": "nvchad-starter"
+      },
+      "locked": {
+        "lastModified": 1735359889,
+        "narHash": "sha256-QHsRVxfZhyDEG6vRp2ycWME/YC44XcC6pt3kFem3VHM=",
+        "owner": "nix-community",
+        "repo": "nix4nvchad",
+        "rev": "1fbc3a57bc954d8ff6e166e3ca07eba1b7013b71",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix4nvchad",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -546,6 +584,7 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-lib": "nixpkgs-lib",
         "nur": "nur",
+        "nvchad4nix": "nvchad4nix",
         "pre-commit-hooks": "pre-commit-hooks",
         "vscode-server": "vscode-server"
       }

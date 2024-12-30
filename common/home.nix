@@ -74,18 +74,35 @@
 
     htop.enable = true;
 
-    # lazygit.enable = true;
-
-    neovim = {
+    nvchad = {
       enable = true;
-      defaultEditor = true;
-      coc.enable = true;
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
-      extraPython3Packages = ps: [ps.pynvim];
+      extraPackages = with pkgs; [
+        nodePackages.bash-language-server
+        (python3.withPackages (ps:
+          with ps; [
+            python-lsp-server
+            flake8
+          ]))
+      ];
+
+      chadrcConfig = ''
+        ---@type ChadrcConfig
+        local M = {}
+
+        M.ui = {
+          theme = 'catppuccin',
+          transparency = true,
+        }
+
+        return M
+      '';
+
+      hm-activation = true;
+      backup = false;
+    };
+
+    ripgrep = {
+      enable = true;
     };
 
     starship = {
