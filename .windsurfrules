@@ -3,3 +3,5 @@
 3. when creating modules, or any other functions, minimize which imports are included; if `pkgs` is the only thing being used, that should be the only import
 4. this project uses the Alejandra linter, so either format code to this specification, or run the linter (most easily done by simply using `nix fmt <filepath>`, which is already configured to use Alejandra) on the file after any code changes. this can be done without asking permission
 5. I have configured an alias to rebuild my nix configuration: `switch`. while it is only possible for me to use this alias, if you see it, then that means I have run the rebuild command for my platform. You are still capable of using the rebuild command directly, so please use that instead of the alias
+6. when you run any commands, ensure that you block on them until you get the results, to ensure it does not run into any errors
+7. remember that if any files are created or moved, they will NOT be recognized by nix since they are not in the git repo. So they will need to be added/staged in git before rebuild will succeed

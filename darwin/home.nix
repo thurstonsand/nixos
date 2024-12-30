@@ -8,21 +8,21 @@ in {
     # Windsurf files
     file = {
       ".codeium/windsurf/memories/global_rules.md" = {
-        source = ./dotfiles/global_rules.md;
+        source = ./dotfiles/.codeium/windsurf/memories/global_rules.md;
         force = true;
       };
-      "Library/Application Support/Windsurf/User/tasks.json" = {
-        source = ./dotfiles/scripts/windsurf-tasks.json;
-        force = true;
-      };
-      ".windsurf/scripts/merge-to-main.sh" = {
-        source = ./dotfiles/scripts/merge-to-main.sh;
-        executable = true;
+      "Library/Application Support/Windsurf/User" = {
+        source = ./dotfiles/Library/${"Application Support"}/Windsurf/User;
+        recursive = true;
         force = true;
       };
     };
   };
-  xdg.configFile."ghostty/config".source = ./dotfiles/ghostty-config;
+  xdg.configFile."." = {
+    source = ./dotfiles/.config;
+    recursive = true;
+    force = true;
+  };
 
   programs = {
     zsh.shellAliases = {

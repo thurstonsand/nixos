@@ -1,0 +1,56 @@
+{
+    "editor.fontFamily": "Mononoki Nerd Font, monospace",
+    "editor.fontSize": 13,
+    "editor.wordWrap": "on",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "diffEditor.codeLens": true,
+    "editor.minimap.enabled": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "workbench.commandPalette.experimental.suggestCommands": true,
+    "workbench.experimental.cloudChanges.autoStore": "onShutdown",
+    "workbench.experimental.cloudChanges.partialMatches.enabled": true,
+    "workbench.experimental.share.enabled": true,
+    "workbench.list.smoothScrolling": true,
+    "git.allowForcePush": true,
+    "git.autofetch": "all",
+    "git.autoStash": true,
+    "git.branchProtection": [
+        "main"
+    ],
+    "git.branchProtectionPrompt": "alwaysCommit",
+    "git.confirmForcePush": false,
+    "git.defaultCloneDirectory": "/Users/thurstonsand/Develop",
+    "git.terminalAuthentication": false,
+    "git.terminalGitEditor": true,
+    "github.gitProtocol": "ssh",
+    "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "editor.formatOnSave": true,
+    "nix.formatterPath": [
+        "nix",
+        "fmt",
+    ],
+    "nix.enableLanguageServer": true,
+    "nix.serverPath": "nil",
+    "nix.serverSettings": {
+        "nil": {
+            "formatting": {
+                // can possibly speed this up: https://github.com/oxalica/nil/issues/70
+                "command": [
+                    "nix",
+                    "fmt",
+                    "--",
+                    "--"
+                ]
+            }
+        },
+    },
+    "git.confirmSync": false,
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Tokyo Night",
+    "windsurf.autocompleteSpeed": "fast",
+    "files.autoSave": "onFocusChange",
+    "windsurf.enableModelBasedAutoExecution": true,
+    "gitlens.mode.active": "zen",
+    "editor.accessibilitySupport": "on",
+}

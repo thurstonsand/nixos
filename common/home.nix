@@ -136,7 +136,7 @@
       shellAliases = {
         "ll" = "ls -l";
         "la" = "ls -al";
-        "l" = "ls -CF";
+        "l" = "eza -F";
         "ping" = "prettyping";
         "top" = "htop";
       };

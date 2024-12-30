@@ -1,6 +1,6 @@
-font-family = Mononoki Nerd Font Mono
+font-family = Mononoki Nerd Font
 # also change the window title at the top
-window-title-font-family = Mononoki Nerd Font Mono Bold
+window-title-font-family = Mononoki Nerd Font Bold
 font-size = 14
 
 # if not inheriting from a previous window
