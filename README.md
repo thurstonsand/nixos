@@ -8,7 +8,8 @@
    ```
 3. Download the git repo:
    ```
-   git clone git@github.com:thurstonsand/nixos.git
+   mkdir -p ~/Develop
+   git clone git@github.com:thurstonsand/nixos.git ~/Develop
    ```
 4. Run:
    ```

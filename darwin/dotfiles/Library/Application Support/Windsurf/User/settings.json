@@ -52,5 +52,5 @@
     "files.autoSave": "onFocusChange",
     "windsurf.enableModelBasedAutoExecution": true,
     "gitlens.mode.active": "zen",
-    "editor.accessibilitySupport": "on",
+    "editor.accessibilitySupport": "off",
 }
