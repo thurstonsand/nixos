@@ -12,6 +12,7 @@
       }))
       nix-prefetch-github
       prettyping
+      storj-uplink
       tldr
       unzip
     ];

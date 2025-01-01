@@ -30,8 +30,10 @@
       "moonlight"
       "orion"
       "raycast"
+      "rectangle-pro"
       "reflect"
       "setapp"
+      "steam"
       "wifiman"
       "windsurf"
     ];
