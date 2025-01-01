@@ -105,6 +105,33 @@
       enable = true;
     };
 
+    ssh = {
+      enable = true;
+
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+      extraConfig = ''IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
+
+      matchBlocks = {
+        "nix" = {
+          hostname = "nix.thurstons.house";
+          user = "thurstonsand";
+          forwardAgent = true;
+        };
+
+        "truenas" = {
+          hostname = "truenas.thurstons.house";
+          user = "admin";
+          forwardAgent = true;
+          setEnv = {
+            # not needed if tic is run:
+            # https://ghostty.org/docs/help/terminfo#copy-ghostty's-terminfo-to-a-remote-machine
+            # TERM = "xterm-256color";
+          };
+        };
+      };
+    };
+
     starship = {
       enable = true;
       settings = {

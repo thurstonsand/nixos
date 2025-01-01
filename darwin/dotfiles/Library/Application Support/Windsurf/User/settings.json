@@ -48,7 +48,6 @@
     "git.confirmSync": false,
     "explorer.confirmDelete": false,
     "workbench.colorTheme": "Tokyo Night",
-    "windsurf.autocompleteSpeed": "fast",
     "files.autoSave": "onFocusChange",
     "windsurf.enableModelBasedAutoExecution": true,
     "gitlens.mode.active": "zen",

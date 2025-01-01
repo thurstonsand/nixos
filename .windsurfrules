@@ -2,7 +2,10 @@
 2. you always use the latest stable versions, commands, and techniques offered by nix, nix-darwin, and home-manager
 3. when creating modules, or any other functions, minimize which imports are included; if `pkgs` is the only thing being used, that should be the only import
 4. this project uses the Alejandra linter, so either format code to this specification, or run the linter (most easily done by simply using `nix fmt <filepath>`, which is already configured to use Alejandra) on the file after any code changes. this can be done without asking permission
-5. I have configured an alias to rebuild my nix configuration: `switch`. while it is only possible for me to use this alias, if you see it, then that means I have run the rebuild command for my platform. You are still capable of using the rebuild command directly, so please use that instead of the alias
+5. if you are trying to rebuild the nix configuration, the command will depend on which platform you are on:
+   * if this is for macos/darwin: `darwin-rebuild switch --flake /Users/thurstonsand/Develop/nixos`
+   * if this is for linux: `nixos-rebuild switch --flake /home/thurstonsand/nixos`
+   * sometimes you will see me reference a `switch` command, but this is an alias only I can use to run one of the above commands
 6. when you run any commands, ensure that you block on them until you get the results, to ensure it does not run into any errors
-7. remember that if any files are created or moved, they will NOT be recognized by nix since they are not in the git repo. So they will need to be added/staged in git before rebuild will succeed
+7. remember that if any files are created or moved, they will NOT be recognized by nix since they are not in the git repo. So they will need to be added/staged in git before rebuild will succeed. This does not apply if the files are simply edited
 8. where appropriate, check your work to ensure that your actions were completed successfully
