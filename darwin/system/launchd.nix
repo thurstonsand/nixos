@@ -1,17 +1,11 @@
 {
   launchd.user.agents.brew-autoupdate = {
     serviceConfig = {
-      ProgramArguments = [
-        "/opt/homebrew/bin/brew"
-        "autoupdate"
-        "start"
-        "86400"
-        "--cleanup"
-      ];
+      ProgramArguments = ["${./scripts/brew-autoupdate.sh}"];
       RunAtLoad = true;
       KeepAlive = false;
       StandardErrorPath = "/tmp/brew-autoupdate.err.log";
-      StandardOutPath = "/tmp/brew-autoupdate.out.log";
+      StandardOutPath = "/tmp/brew-autoupdate.log";
     };
   };
 }
