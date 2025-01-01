@@ -63,7 +63,6 @@
         color.ui = "auto";
         credential.helper = "/usr/local/share/gcm-core/git-credential-manager";
         gpg.format = "ssh";
-        "gpg \"ssh\"".program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
         init.defaultBranch = "main";
         pull.rebase = true;
         push = {

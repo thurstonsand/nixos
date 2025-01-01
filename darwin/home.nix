@@ -33,6 +33,9 @@ in {
   };
 
   programs = {
+    git.extraConfig = {
+      "gpg \"ssh\"".program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+    };
     zsh.shellAliases = {
       bd = "brew desc";
       bh = "brew home";
