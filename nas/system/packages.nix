@@ -23,6 +23,7 @@ in {
   environment.systemPackages = with pkgs; [
     container-updater
     git
+    ghostty
     # to generate user password, recommend: sudo mkpasswd -m sha-512 <password>
     mkpasswd
   ];

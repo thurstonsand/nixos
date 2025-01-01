@@ -7,7 +7,7 @@
 
   programs = {
     zsh.shellAliases = {
-      switch = "sudo nixos-rebuild switch --flake";
+      switch = "sudo nixos-rebuild switch --flake /home/thurstonsand/nixos";
     };
   };
 
