@@ -10,6 +10,10 @@
       (pkgs.git-trim.overrideAttrs (old: {
         buildInputs = (old.buildInputs or []) ++ [pkgs.zlib];
       }))
+      # TODO: Check back in to see if this is available:
+      # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/in/inshellisense/package.nix
+      # must be >0.0.1-rc.18
+      # inshellisense
       nix-prefetch-github
       prettyping
       storj-uplink
