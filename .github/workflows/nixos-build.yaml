@@ -1,0 +1,56 @@
+name: NixOS Build
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nas/**'
+      - 'common/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/nixos-build.yaml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'nas/**'
+      - 'common/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/nixos-build.yaml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Enable Nix flakes and cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Setup git-crypt
+        uses: amplium/git-crypt-action@master
+        with:
+          key_encoded: ${{ secrets.GIT_CRYPT_KEY_BASE64 }}
+
+      - name: Install nixos-rebuild
+        run: |
+          # Install nixos-rebuild from the same nixpkgs version as specified in flake.lock
+          nix profile install nixpkgs#nixos-rebuild
+
+      - name: Build NixOS configuration
+        run: |
+          # Build the knownapps configuration
+          nixos-rebuild build --flake .#knownapps
+          
+          # Verify the build succeeded
+          if [ -e result ]; then
+            echo "✅ Build successful"
+            # Print the store path for debugging
+            readlink -f result
+          else
+            echo "❌ Build failed - no result symlink found"
+            exit 1
+          fi
