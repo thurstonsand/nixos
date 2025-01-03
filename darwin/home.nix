@@ -16,12 +16,9 @@ in {
         recursive = true;
         force = true;
       };
-      "Library/Application Support/Storj/Uplink/config.ini" = {
-        source = ../common/dotfiles/storj-uplink/config.ini;
-        force = true;
-      };
-      "Library/Application Support/Storj/Uplink/access.json" = {
-        source = ../common/dotfiles/storj-uplink/access.json;
+      "Library/Application Support/Storj/Uplink" = {
+        source = ../common/dotfiles/storj-uplink;
+        recursive = true;
         force = true;
       };
     };

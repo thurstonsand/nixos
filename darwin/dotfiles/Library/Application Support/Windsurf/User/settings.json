@@ -52,4 +52,5 @@
     "windsurf.enableModelBasedAutoExecution": true,
     "gitlens.mode.active": "zen",
     "editor.accessibilitySupport": "off",
+    "security.workspace.trust.untrustedFiles": "open",
 }
